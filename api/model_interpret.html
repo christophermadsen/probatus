@@ -1,0 +1,2583 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Validation of binary classifiers and data used to develop them">
+      
+      
+      
+        <meta name="author" content="ING Bank N. V.">
+      
+      
+        <link rel="canonical" href="https://ing-bank.github.io/probatus/api/model_interpret.html">
+      
+      <link rel="icon" href="../img/Probatus_P_white.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.3.1">
+    
+    
+      
+        <title>probatus.interpret - Probatus Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.1c75ef36.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#ff6e42">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,400i,700%7CUbuntu+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Ubuntu";--md-code-font-family:"Ubuntu Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#model-interpretation-using-shap" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Probatus Docs" class="md-header__button md-logo" aria-label="Probatus Docs" data-md-component="logo">
+      
+  <img src="../img/Probatus_P_white.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Probatus Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              probatus.interpret
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/ing-bank/probatus/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../tutorials/nb_shap_feature_elimination.html" class="md-tabs__link">
+        Tutorials
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../howto/reproducibility.html" class="md-tabs__link">
+        HowTo
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="feature_elimination.html" class="md-tabs__link md-tabs__link--active">
+        API
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../discussion/vision.html" class="md-tabs__link">
+        Discussion
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Probatus Docs" class="md-nav__button md-logo" aria-label="Probatus Docs" data-md-component="logo">
+      
+  <img src="../img/Probatus_P_white.png" alt="logo">
+
+    </a>
+    Probatus Docs
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ing-bank/probatus/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_shap_feature_elimination.html" class="md-nav__link">
+        ShapRFECV - Recursive Feature Elimination using SHAP importance
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_shap_model_interpreter.html" class="md-nav__link">
+        Tree-based & Linear Model Interpretation with SHAP
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_imputation_comparison.html" class="md-nav__link">
+        Imputation Strategy Comparison
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_metric_volatility.html" class="md-nav__link">
+        Model Metrics Volatility
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_sample_similarity.html" class="md-nav__link">
+        Multivariate Sample Similarity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_distribution_statistics.html" class="md-nav__link">
+        Univariate Sample Similarity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_custom_scoring.html" class="md-nav__link">
+        Custom Scoring Metrics
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          HowTo
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="HowTo" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          HowTo
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/reproducibility.html" class="md-nav__link">
+        Reproduce the results
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/grouped_data.html" class="md-nav__link">
+        Work with grouped data
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          API
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature_elimination.html" class="md-nav__link">
+        probatus.feature_elimination
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          probatus.interpret
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="model_interpret.html" class="md-nav__link md-nav__link--active">
+        probatus.interpret
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.interpret.model_interpret.ShapModelInterpreter" class="md-nav__link">
+    ShapModelInterpreter
+  </a>
+  
+    <nav class="md-nav" aria-label="ShapModelInterpreter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.model_interpret.ShapModelInterpreter.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.model_interpret.ShapModelInterpreter.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.model_interpret.ShapModelInterpreter.fit" class="md-nav__link">
+    fit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.model_interpret.ShapModelInterpreter.fit_compute" class="md-nav__link">
+    fit_compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.model_interpret.ShapModelInterpreter.plot" class="md-nav__link">
+    plot()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.interpret.shap_dependence.DependencePlotter" class="md-nav__link">
+    DependencePlotter
+  </a>
+  
+    <nav class="md-nav" aria-label="DependencePlotter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.shap_dependence.DependencePlotter.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.shap_dependence.DependencePlotter.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.shap_dependence.DependencePlotter.fit" class="md-nav__link">
+    fit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.shap_dependence.DependencePlotter.fit_compute" class="md-nav__link">
+    fit_compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.shap_dependence.DependencePlotter.plot" class="md-nav__link">
+    plot()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="metric_volatility.html" class="md-nav__link">
+        probatus.metric_volatility
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="imputation_selector.html" class="md-nav__link">
+        probatus.missing_values
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sample_similarity.html" class="md-nav__link">
+        probatus.sample_similarity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="stat_tests.html" class="md-nav__link">
+        probatus.stat_tests
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="utils.html" class="md-nav__link">
+        probatus.utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Discussion
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Discussion" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Discussion
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../discussion/vision.html" class="md-nav__link">
+        Vision
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../discussion/nb_rfecv_vs_shaprfecv.html" class="md-nav__link">
+        ShapRFECV vs sklearn RFECV
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../discussion/contributing.html" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.interpret.model_interpret.ShapModelInterpreter" class="md-nav__link">
+    ShapModelInterpreter
+  </a>
+  
+    <nav class="md-nav" aria-label="ShapModelInterpreter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.model_interpret.ShapModelInterpreter.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.model_interpret.ShapModelInterpreter.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.model_interpret.ShapModelInterpreter.fit" class="md-nav__link">
+    fit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.model_interpret.ShapModelInterpreter.fit_compute" class="md-nav__link">
+    fit_compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.model_interpret.ShapModelInterpreter.plot" class="md-nav__link">
+    plot()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.interpret.shap_dependence.DependencePlotter" class="md-nav__link">
+    DependencePlotter
+  </a>
+  
+    <nav class="md-nav" aria-label="DependencePlotter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.shap_dependence.DependencePlotter.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.shap_dependence.DependencePlotter.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.shap_dependence.DependencePlotter.fit" class="md-nav__link">
+    fit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.shap_dependence.DependencePlotter.fit_compute" class="md-nav__link">
+    fit_compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.interpret.shap_dependence.DependencePlotter.plot" class="md-nav__link">
+    plot()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ing-bank/probatus/edit/master/docs/api/model_interpret.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="model-interpretation-using-shap">Model Interpretation using SHAP<a class="headerlink" href="#model-interpretation-using-shap" title="Permanent link">&para;</a></h1>
+<p>The aim of this module is to provide tools for model interpretation using the <a href="https://shap.readthedocs.io/en/latest/">SHAP</a> library.
+The class below is a convenience wrapper that implements multiple plots for tree-based &amp; linear models.</p>
+
+
+  <div class="doc doc-object doc-module">
+
+
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 class="doc doc-heading" id="probatus.interpret.model_interpret.ShapModelInterpreter">
+        <code>
+ShapModelInterpreter            (<span title="probatus.utils.interface.BaseFitComputePlotClass">BaseFitComputePlotClass</span>)
+        </code>
+
+
+
+<a class="headerlink" href="#probatus.interpret.model_interpret.ShapModelInterpreter" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>This class is a wrapper that allows to easily analyse a model's features.</p>
+<p>It allows us to plot SHAP feature importance,
+    SHAP summary plot and SHAP dependence plots.</p>
+
+<p><strong>Examples:</strong></p>
+    
+      <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">probatus.interpret</span> <span class="kn">import</span> <span class="n">ShapModelInterpreter</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">feature_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;f1&#39;</span><span class="p">,</span> <span class="s1">&#39;f2&#39;</span><span class="p">,</span> <span class="s1">&#39;f3&#39;</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">]</span>
+
+<span class="c1"># Prepare two samples</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">feature_names</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Prepare and fit model. Remember about class_weight=&quot;balanced&quot; or an equivalent.</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">class_weight</span><span class="o">=</span><span class="s1">&#39;balanced&#39;</span><span class="p">,</span> <span class="n">n_estimators</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Train ShapModelInterpreter</span>
+<span class="n">shap_interpreter</span> <span class="o">=</span> <span class="n">ShapModelInterpreter</span><span class="p">(</span><span class="n">clf</span><span class="p">)</span>
+<span class="n">feature_importance</span> <span class="o">=</span> <span class="n">shap_interpreter</span><span class="o">.</span><span class="n">fit_compute</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+
+<span class="c1"># Make plots</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">shap_interpreter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;importance&#39;</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">shap_interpreter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;summary&#39;</span><span class="p">)</span>
+<span class="n">ax3</span> <span class="o">=</span> <span class="n">shap_interpreter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;dependence&#39;</span><span class="p">,</span> <span class="n">target_columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;f1&#39;</span><span class="p">,</span> <span class="s1">&#39;f2&#39;</span><span class="p">])</span>
+<span class="n">ax4</span> <span class="o">=</span> <span class="n">shap_interpreter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="n">samples_index</span><span class="o">=</span><span class="p">[</span><span class="n">X_test</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">]])</span>
+</code></pre></div>
+<p><img src="../img/model_interpret_importance.png" width="320" />
+<img src="../img/model_interpret_summary.png" width="320" />
+<img src="../img/model_interpret_dep.png" width="320" />
+<img src="../img/model_interpret_sample.png" width="320" /></p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.interpret.model_interpret.ShapModelInterpreter.__init__">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clf</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.interpret.model_interpret.ShapModelInterpreter.__init__" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initializes the class.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>clf</code></td>
+        <td><code>binary classifier</code></td>
+        <td><p>Model fitted on X_train.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>scoring</code></td>
+        <td><code>string or probatus.utils.Scorer</code></td>
+        <td><p>Metric for which the model performance is calculated. It can be either a metric name  aligned with
+predefined classification scorers names in sklearn
+(<a href="https://scikit-learn.org/stable/modules/model_evaluation.html">link</a>).
+Another option is using probatus.utils.Scorer to define a custom metric.</p></td>
+        <td><code>&#39;roc_auc&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>verbose</code></td>
+        <td><code>int</code></td>
+        <td><p>Controls verbosity of the output:</p>
+<ul>
+<li>0 - niether prints nor warnings are shown</li>
+<li>1 - 50 - only most important warnings</li>
+<li>51 - 100 - shows other warnings and prints</li>
+<li>above 100 - presents all prints and all warnings (including SHAP warnings).</li>
+</ul></td>
+        <td><code>0</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/interpret/model_interpret.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clf</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;roc_auc&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initializes the class.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        clf (binary classifier):</span>
+<span class="sd">            Model fitted on X_train.</span>
+
+<span class="sd">        scoring (string or probatus.utils.Scorer, optional):</span>
+<span class="sd">            Metric for which the model performance is calculated. It can be either a metric name  aligned with</span>
+<span class="sd">            predefined classification scorers names in sklearn</span>
+<span class="sd">            ([link](https://scikit-learn.org/stable/modules/model_evaluation.html)).</span>
+<span class="sd">            Another option is using probatus.utils.Scorer to define a custom metric.</span>
+
+<span class="sd">        verbose (int, optional):</span>
+<span class="sd">            Controls verbosity of the output:</span>
+
+<span class="sd">            - 0 - niether prints nor warnings are shown</span>
+<span class="sd">            - 1 - 50 - only most important warnings</span>
+<span class="sd">            - 51 - 100 - shows other warnings and prints</span>
+<span class="sd">            - above 100 - presents all prints and all warnings (including SHAP warnings).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">clf</span> <span class="o">=</span> <span class="n">clf</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span> <span class="o">=</span> <span class="n">get_single_scorer</span><span class="p">(</span><span class="n">scoring</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.interpret.model_interpret.ShapModelInterpreter.compute">
+<code class="highlight language-python"><span class="n">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_scores</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.interpret.model_interpret.ShapModelInterpreter.compute" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Computes the DataFrame that presents the importance of each feature.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>return_scores</code></td>
+        <td><code>bool</code></td>
+        <td><p>Flag indicating whether the method should return the train and test score of the model, together with
+the model interpretation report. If true, the output of this method is a tuple of DataFrame, float,
+float.</p></td>
+        <td><code>False</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(pd.DataFrame or tuple(pd.DataFrame, float, float))</code></td>
+      <td><p>Dataframe with SHAP feature importance, or tuple containing the dataframe, train and test scores of the
+    model.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/interpret/model_interpret.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_scores</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the DataFrame that presents the importance of each feature.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        return_scores (bool, optional):</span>
+<span class="sd">            Flag indicating whether the method should return the train and test score of the model, together with</span>
+<span class="sd">            the model interpretation report. If true, the output of this method is a tuple of DataFrame, float,</span>
+<span class="sd">            float.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (pd.DataFrame or tuple(pd.DataFrame, float, float)):</span>
+<span class="sd">            Dataframe with SHAP feature importance, or tuple containing the dataframe, train and test scores of the</span>
+<span class="sd">            model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_check_if_fitted</span><span class="p">()</span>
+
+    <span class="c1"># Compute SHAP importance</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">importance_df_train</span> <span class="o">=</span> <span class="n">calculate_shap_importance</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shap_values_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span><span class="p">,</span> <span class="n">output_columns_suffix</span><span class="o">=</span><span class="s2">&quot;_train&quot;</span>
+    <span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">importance_df_test</span> <span class="o">=</span> <span class="n">calculate_shap_importance</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shap_values_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span><span class="p">,</span> <span class="n">output_columns_suffix</span><span class="o">=</span><span class="s2">&quot;_test&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Concatenate the train and test, sort by test set importance and reorder the columns</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">importance_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">importance_df_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">importance_df_test</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span>
+        <span class="s2">&quot;mean_abs_shap_value_test&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)[</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;mean_abs_shap_value_test&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;mean_abs_shap_value_train&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;mean_shap_value_test&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;mean_shap_value_train&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">return_scores</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">importance_df</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_score</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_score</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">importance_df</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.interpret.model_interpret.ShapModelInterpreter.fit">
+<code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">class_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">shap_kwargs</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.interpret.model_interpret.ShapModelInterpreter.fit" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Fits the object and calculates the shap values for the provided datasets.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>X_train</code></td>
+        <td><code>pd.DataFrame</code></td>
+        <td><p>Dataframe containing training data.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>X_test</code></td>
+        <td><code>pd.DataFrame</code></td>
+        <td><p>Dataframe containing test data.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>y_train</code></td>
+        <td><code>pd.Series</code></td>
+        <td><p>Series of binary labels for train data.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>y_test</code></td>
+        <td><code>pd.Series</code></td>
+        <td><p>Series of binary labels for test data.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>column_names</code></td>
+        <td><code>None, or list of str</code></td>
+        <td><p>List of feature names for the dataset. If None, then column names from the X_train dataframe are used.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>class_names</code></td>
+        <td><code>None, or list of str</code></td>
+        <td><p>List of class names e.g. ['neg', 'pos']. If none, the default ['Negative Class', 'Positive Class'] are
+used.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>**shap_kwargs</code></td>
+        <td></td>
+        <td><p>keyword arguments passed to
+<a href="https://shap.readthedocs.io/en/latest/generated/shap.Explainer.html#shap.Explainer">shap.Explainer</a>.
+It also enables <code>approximate</code> and <code>check_additivity</code> parameters, passed while calculating SHAP values.
+The <code>approximate=True</code> causes less accurate, but faster SHAP values calculation, while
+<code>check_additivity=False</code> disables the additivity check inside SHAP.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/interpret/model_interpret.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">class_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">shap_kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fits the object and calculates the shap values for the provided datasets.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        X_train (pd.DataFrame):</span>
+<span class="sd">            Dataframe containing training data.</span>
+
+<span class="sd">        X_test (pd.DataFrame):</span>
+<span class="sd">            Dataframe containing test data.</span>
+
+<span class="sd">        y_train (pd.Series):</span>
+<span class="sd">            Series of binary labels for train data.</span>
+
+<span class="sd">        y_test (pd.Series):</span>
+<span class="sd">            Series of binary labels for test data.</span>
+
+<span class="sd">        column_names (None, or list of str, optional):</span>
+<span class="sd">            List of feature names for the dataset. If None, then column names from the X_train dataframe are used.</span>
+
+<span class="sd">        class_names (None, or list of str, optional):</span>
+<span class="sd">            List of class names e.g. [&#39;neg&#39;, &#39;pos&#39;]. If none, the default [&#39;Negative Class&#39;, &#39;Positive Class&#39;] are</span>
+<span class="sd">            used.</span>
+
+<span class="sd">        **shap_kwargs:</span>
+<span class="sd">            keyword arguments passed to</span>
+<span class="sd">            [shap.Explainer](https://shap.readthedocs.io/en/latest/generated/shap.Explainer.html#shap.Explainer).</span>
+<span class="sd">            It also enables `approximate` and `check_additivity` parameters, passed while calculating SHAP values.</span>
+<span class="sd">            The `approximate=True` causes less accurate, but faster SHAP values calculation, while</span>
+<span class="sd">            `check_additivity=False` disables the additivity check inside SHAP.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span> <span class="o">=</span> <span class="n">preprocess_data</span><span class="p">(</span>
+        <span class="n">X_train</span><span class="p">,</span> <span class="n">X_name</span><span class="o">=</span><span class="s2">&quot;X_train&quot;</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="n">column_names</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">preprocess_data</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">X_name</span><span class="o">=</span><span class="s2">&quot;X_test&quot;</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="n">column_names</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span> <span class="o">=</span> <span class="n">preprocess_labels</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_name</span><span class="o">=</span><span class="s2">&quot;y_train&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">y_test</span> <span class="o">=</span> <span class="n">preprocess_labels</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_name</span><span class="o">=</span><span class="s2">&quot;y_test&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X_test</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="c1"># Set class names</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="o">=</span> <span class="n">class_names</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Negative Class&quot;</span><span class="p">,</span> <span class="s2">&quot;Positive Class&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Calculate Metrics</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">train_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">test_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_test</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">results_text</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Train </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="o">.</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_score</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">,</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;Test </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="o">.</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_score</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shap_values_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_value_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdp_train</span><span class="p">,)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prep_shap_related_variables</span><span class="p">(</span>
+        <span class="n">clf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">clf</span><span class="p">,</span>
+        <span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">,</span>
+        <span class="n">column_names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column_names</span><span class="p">,</span>
+        <span class="n">class_names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">class_names</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">shap_kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shap_values_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_value_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdp_test</span><span class="p">,)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prep_shap_related_variables</span><span class="p">(</span>
+        <span class="n">clf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">clf</span><span class="p">,</span>
+        <span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X_test</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y_test</span><span class="p">,</span>
+        <span class="n">column_names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column_names</span><span class="p">,</span>
+        <span class="n">class_names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">class_names</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">shap_kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.interpret.model_interpret.ShapModelInterpreter.fit_compute">
+<code class="highlight language-python"><span class="n">fit_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">class_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_scores</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">shap_kwargs</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.interpret.model_interpret.ShapModelInterpreter.fit_compute" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Fits the object and calculates the shap values for the provided datasets.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>X_train</code></td>
+        <td><code>pd.DataFrame</code></td>
+        <td><p>Dataframe containing training data.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>X_test</code></td>
+        <td><code>pd.DataFrame</code></td>
+        <td><p>Dataframe containing test data.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>y_train</code></td>
+        <td><code>pd.Series</code></td>
+        <td><p>Series of binary labels for train data.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>y_test</code></td>
+        <td><code>pd.Series</code></td>
+        <td><p>Series of binary labels for test data.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>column_names</code></td>
+        <td><code>None, or list of str</code></td>
+        <td><p>List of feature names for the dataset.
+If None, then column names from the X_train dataframe are used.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>class_names</code></td>
+        <td><code>None, or list of str</code></td>
+        <td><p>List of class names e.g. ['neg', 'pos'].
+If none, the default ['Negative Class', 'Positive Class'] are
+used.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>return_scores</code></td>
+        <td><code>bool</code></td>
+        <td><p>Flag indicating whether the method should return
+the train and test score of the model,
+together with the model interpretation report. If true,
+the output of this method is a tuple of DataFrame, float,
+float.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>**shap_kwargs</code></td>
+        <td></td>
+        <td><p>keyword arguments passed to
+<a href="https://shap.readthedocs.io/en/latest/generated/shap.Explainer.html#shap.Explainer">shap.Explainer</a>.
+It also enables <code>approximate</code> and <code>check_additivity</code> parameters, passed while calculating SHAP values.
+The <code>approximate=True</code> causes less accurate, but faster SHAP values calculation, while
+<code>check_additivity=False</code> disables the additivity check inside SHAP.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(pd.DataFrame or tuple(pd.DataFrame, float, float))</code></td>
+      <td><p>Dataframe with SHAP feature importance, or tuple containing the dataframe, train and test scores of the
+    model.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/interpret/model_interpret.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fit_compute</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">X_train</span><span class="p">,</span>
+    <span class="n">X_test</span><span class="p">,</span>
+    <span class="n">y_train</span><span class="p">,</span>
+    <span class="n">y_test</span><span class="p">,</span>
+    <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">class_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_scores</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">shap_kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fits the object and calculates the shap values for the provided datasets.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        X_train (pd.DataFrame):</span>
+<span class="sd">            Dataframe containing training data.</span>
+
+<span class="sd">        X_test (pd.DataFrame):</span>
+<span class="sd">            Dataframe containing test data.</span>
+
+<span class="sd">        y_train (pd.Series):</span>
+<span class="sd">            Series of binary labels for train data.</span>
+
+<span class="sd">        y_test (pd.Series):</span>
+<span class="sd">            Series of binary labels for test data.</span>
+
+<span class="sd">        column_names (None, or list of str, optional):</span>
+<span class="sd">            List of feature names for the dataset.</span>
+<span class="sd">            If None, then column names from the X_train dataframe are used.</span>
+
+<span class="sd">        class_names (None, or list of str, optional):</span>
+<span class="sd">            List of class names e.g. [&#39;neg&#39;, &#39;pos&#39;].</span>
+<span class="sd">            If none, the default [&#39;Negative Class&#39;, &#39;Positive Class&#39;] are</span>
+<span class="sd">            used.</span>
+
+<span class="sd">        return_scores (bool, optional):</span>
+<span class="sd">            Flag indicating whether the method should return</span>
+<span class="sd">            the train and test score of the model,</span>
+<span class="sd">            together with the model interpretation report. If true,</span>
+<span class="sd">            the output of this method is a tuple of DataFrame, float,</span>
+<span class="sd">            float.</span>
+
+<span class="sd">        **shap_kwargs:</span>
+<span class="sd">            keyword arguments passed to</span>
+<span class="sd">            [shap.Explainer](https://shap.readthedocs.io/en/latest/generated/shap.Explainer.html#shap.Explainer).</span>
+<span class="sd">            It also enables `approximate` and `check_additivity` parameters, passed while calculating SHAP values.</span>
+<span class="sd">            The `approximate=True` causes less accurate, but faster SHAP values calculation, while</span>
+<span class="sd">            `check_additivity=False` disables the additivity check inside SHAP.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (pd.DataFrame or tuple(pd.DataFrame, float, float)):</span>
+<span class="sd">            Dataframe with SHAP feature importance, or tuple containing the dataframe, train and test scores of the</span>
+<span class="sd">            model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+        <span class="n">X_train</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span>
+        <span class="n">X_test</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span>
+        <span class="n">y_train</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span>
+        <span class="n">y_test</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span>
+        <span class="n">column_names</span><span class="o">=</span><span class="n">column_names</span><span class="p">,</span>
+        <span class="n">class_names</span><span class="o">=</span><span class="n">class_names</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">shap_kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.interpret.model_interpret.ShapModelInterpreter.plot">
+<code class="highlight language-python"><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_type</span><span class="p">,</span> <span class="n">target_set</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">target_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">samples_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.interpret.model_interpret.ShapModelInterpreter.plot" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Plots the appropriate SHAP plot.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>plot_type</code></td>
+        <td><code>str</code></td>
+        <td><p>One of the following:</p>
+<ul>
+<li><code>'importance'</code>: Feature importance plot, SHAP bar summary plot</li>
+<li><code>'summary'</code>: SHAP Summary plot</li>
+<li><code>'dependence'</code>: Dependence plot for each feature</li>
+<li><code>'sample'</code>: Explanation of a given sample in the test data</li>
+</ul></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>target_set</code></td>
+        <td><code>str</code></td>
+        <td><p>The set for which the plot should be generated, either <code>train</code> or <code>test</code> set. We recommend using test
+set, because it is not biased by model training. The train set plots are mainly used to compare with the
+test set plots, whether there are significant differences, which indicate shift in data distribution.</p></td>
+        <td><code>&#39;test&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>target_columns</code></td>
+        <td><code>None, str or list of str</code></td>
+        <td><p>List of features names, for which the plots should be generated. If None, all features will be plotted.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>samples_index</code></td>
+        <td><code>None, int, list or pd.Index</code></td>
+        <td><p>Index of samples to be explained if the <code>plot_type=sample</code>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>show</code></td>
+        <td><code>bool</code></td>
+        <td><p>If True, the plots are showed to the user, otherwise they are not shown. Not showing plot can be useful,
+when you want to edit the returned axis, before showing it.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>**plot_kwargs</code></td>
+        <td></td>
+        <td><p>Keyword arguments passed to the plot method. For 'importance' and 'summary' plot_type, the kwargs are
+passed to shap.summary_plot, for 'dependence' plot_type, they are passed to
+probatus.interpret.DependencePlotter.plot method.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(matplotlib.axes or list(matplotlib.axes))</code></td>
+      <td><p>An Axes with the plot, or list of axes when multiple plots are returned.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/interpret/model_interpret.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_type</span><span class="p">,</span> <span class="n">target_set</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">target_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">samples_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots the appropriate SHAP plot.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        plot_type (str):</span>
+<span class="sd">            One of the following:</span>
+
+<span class="sd">            - `&#39;importance&#39;`: Feature importance plot, SHAP bar summary plot</span>
+<span class="sd">            - `&#39;summary&#39;`: SHAP Summary plot</span>
+<span class="sd">            - `&#39;dependence&#39;`: Dependence plot for each feature</span>
+<span class="sd">            - `&#39;sample&#39;`: Explanation of a given sample in the test data</span>
+
+<span class="sd">        target_set (str, optional):</span>
+<span class="sd">            The set for which the plot should be generated, either `train` or `test` set. We recommend using test</span>
+<span class="sd">            set, because it is not biased by model training. The train set plots are mainly used to compare with the</span>
+<span class="sd">            test set plots, whether there are significant differences, which indicate shift in data distribution.</span>
+
+<span class="sd">        target_columns (None, str or list of str, optional):</span>
+<span class="sd">            List of features names, for which the plots should be generated. If None, all features will be plotted.</span>
+
+<span class="sd">        samples_index (None, int, list or pd.Index, optional):</span>
+<span class="sd">            Index of samples to be explained if the `plot_type=sample`.</span>
+
+<span class="sd">        show (bool, optional):</span>
+<span class="sd">            If True, the plots are showed to the user, otherwise they are not shown. Not showing plot can be useful,</span>
+<span class="sd">            when you want to edit the returned axis, before showing it.</span>
+
+<span class="sd">        **plot_kwargs:</span>
+<span class="sd">            Keyword arguments passed to the plot method. For &#39;importance&#39; and &#39;summary&#39; plot_type, the kwargs are</span>
+<span class="sd">            passed to shap.summary_plot, for &#39;dependence&#39; plot_type, they are passed to</span>
+<span class="sd">            probatus.interpret.DependencePlotter.plot method.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (matplotlib.axes or list(matplotlib.axes)):</span>
+<span class="sd">            An Axes with the plot, or list of axes when multiple plots are returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Choose correct columns</span>
+    <span class="k">if</span> <span class="n">target_columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">target_columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span>
+
+    <span class="n">target_columns</span> <span class="o">=</span> <span class="n">assure_list_of_strings</span><span class="p">(</span><span class="n">target_columns</span><span class="p">,</span> <span class="s2">&quot;target_columns&quot;</span><span class="p">)</span>
+    <span class="n">target_columns_indices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">column_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">target_column</span><span class="p">)</span> <span class="k">for</span> <span class="n">target_column</span> <span class="ow">in</span> <span class="n">target_columns</span><span class="p">]</span>
+
+    <span class="c1"># Choose the correct dataset</span>
+    <span class="k">if</span> <span class="n">target_set</span> <span class="o">==</span> <span class="s2">&quot;test&quot;</span><span class="p">:</span>
+        <span class="n">target_X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span>
+        <span class="n">target_shap_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shap_values_test</span>
+        <span class="n">target_tdp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdp_test</span>
+        <span class="n">target_expected_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_value_test</span>
+    <span class="k">elif</span> <span class="n">target_set</span> <span class="o">==</span> <span class="s2">&quot;train&quot;</span><span class="p">:</span>
+        <span class="n">target_X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span>
+        <span class="n">target_shap_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shap_values_train</span>
+        <span class="n">target_tdp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdp_train</span>
+        <span class="n">target_expected_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expected_value_train</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The target_set parameter can be either &quot;train&quot; or &quot;test&quot;.&#39;</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">plot_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;importance&quot;</span><span class="p">,</span> <span class="s2">&quot;summary&quot;</span><span class="p">]:</span>
+        <span class="n">target_X</span> <span class="o">=</span> <span class="n">target_X</span><span class="p">[</span><span class="n">target_columns</span><span class="p">]</span>
+        <span class="n">target_shap_values</span> <span class="o">=</span> <span class="n">target_shap_values</span><span class="p">[:,</span> <span class="n">target_columns_indices</span><span class="p">]</span>
+        <span class="c1"># Set summary plot settings</span>
+        <span class="k">if</span> <span class="n">plot_type</span> <span class="o">==</span> <span class="s2">&quot;importance&quot;</span><span class="p">:</span>
+            <span class="n">plot_type</span> <span class="o">=</span> <span class="s2">&quot;bar&quot;</span>
+            <span class="n">plot_title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SHAP Feature Importance for </span><span class="si">{</span><span class="n">target_set</span><span class="si">}</span><span class="s2"> set&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plot_type</span> <span class="o">=</span> <span class="s2">&quot;dot&quot;</span>
+            <span class="n">plot_title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SHAP Summary plot for </span><span class="si">{</span><span class="n">target_set</span><span class="si">}</span><span class="s2"> set&quot;</span>
+
+        <span class="n">summary_plot</span><span class="p">(</span>
+            <span class="n">target_shap_values</span><span class="p">,</span>
+            <span class="n">target_X</span><span class="p">,</span>
+            <span class="n">plot_type</span><span class="o">=</span><span class="n">plot_type</span><span class="p">,</span>
+            <span class="n">class_names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">class_names</span><span class="p">,</span>
+            <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">plot_title</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">results_text</span><span class="p">,</span>
+            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">),</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+            <span class="n">xycoords</span><span class="o">=</span><span class="s2">&quot;axes fraction&quot;</span><span class="p">,</span>
+            <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">,</span>
+            <span class="n">va</span><span class="o">=</span><span class="s2">&quot;top&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">plot_type</span> <span class="o">==</span> <span class="s2">&quot;dependence&quot;</span><span class="p">:</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="n">target_columns</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_tdp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">feature</span><span class="o">=</span><span class="n">feature_name</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">show</span><span class="o">=</span><span class="n">show</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">))</span>
+
+    <span class="k">elif</span> <span class="n">plot_type</span> <span class="o">==</span> <span class="s2">&quot;sample&quot;</span><span class="p">:</span>
+        <span class="c1"># Ensure the correct samples_index type</span>
+        <span class="k">if</span> <span class="n">samples_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;For sample plot, you need to specify the samples_index be plotted plot&quot;</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">samples_index</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">samples_index</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">samples_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">samples_index</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">samples_index</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">samples_index</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;sample_index must be one of the following: int, str, list or pd.Index&quot;</span><span class="p">))</span>
+
+        <span class="n">ax</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">sample_index</span> <span class="ow">in</span> <span class="n">samples_index</span><span class="p">:</span>
+            <span class="n">sample_loc</span> <span class="o">=</span> <span class="n">target_X</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">sample_index</span><span class="p">)</span>
+
+            <span class="n">waterfall_legacy</span><span class="p">(</span>
+                <span class="n">target_expected_value</span><span class="p">,</span>
+                <span class="n">target_shap_values</span><span class="p">[</span><span class="n">sample_loc</span><span class="p">,</span> <span class="p">:],</span>
+                <span class="n">target_X</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sample_index</span><span class="p">],</span>
+                <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">plot_kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">plot_title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SHAP Sample Explanation of </span><span class="si">{</span><span class="n">target_set</span><span class="si">}</span><span class="s2"> sample for index=</span><span class="si">{</span><span class="n">sample_index</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">current_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+            <span class="n">current_ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">plot_title</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_ax</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Wrong plot type, select from &#39;importance&#39;, &#39;summary&#39;, or &#39;dependence&#39;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">ax</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-module">
+
+
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 class="doc doc-heading" id="probatus.interpret.shap_dependence.DependencePlotter">
+        <code>
+DependencePlotter            (<span title="probatus.utils.interface.BaseFitComputePlotClass">BaseFitComputePlotClass</span>)
+        </code>
+
+
+
+<a class="headerlink" href="#probatus.interpret.shap_dependence.DependencePlotter" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Plotter used to plot SHAP dependence plot together with the target rates.</p>
+<p>Currently it supports tree-based and linear models.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>model</code></td>
+        <td></td>
+        <td><p>classifier for which interpretation is done.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Examples:</strong></p>
+    
+      <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">probatus.interpret</span> <span class="kn">import</span> <span class="n">DependencePlotter</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_informative</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_redundant</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">bdp</span> <span class="o">=</span> <span class="n">DependencePlotter</span><span class="p">(</span><span class="n">clf</span><span class="p">)</span>
+<span class="n">shap_values</span> <span class="o">=</span> <span class="n">bdp</span><span class="o">.</span><span class="n">fit_compute</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">bdp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">feature</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">type_binning</span><span class="o">=</span><span class="s1">&#39;simple&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="../img/model_interpret_dep.png"/></p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.interpret.shap_dependence.DependencePlotter.__init__">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clf</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.interpret.shap_dependence.DependencePlotter.__init__" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initializes the class.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>clf</code></td>
+        <td><code>model object</code></td>
+        <td><p>Binary classification model or pipeline.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>verbose</code></td>
+        <td><code>int</code></td>
+        <td><p>Controls verbosity of the output:</p>
+<ul>
+<li>0 - neither prints nor warnings are shown</li>
+<li>1 - 50 - only most important warnings regarding data properties are shown (excluding SHAP warnings)</li>
+<li>51 - 100 - shows most important warnings, prints of the feature removal process</li>
+<li>above 100 - presents all prints and all warnings (including SHAP warnings).</li>
+</ul></td>
+        <td><code>0</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/interpret/shap_dependence.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clf</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initializes the class.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        clf (model object):</span>
+<span class="sd">            Binary classification model or pipeline.</span>
+
+<span class="sd">        verbose (int, optional):</span>
+<span class="sd">            Controls verbosity of the output:</span>
+
+<span class="sd">            - 0 - neither prints nor warnings are shown</span>
+<span class="sd">            - 1 - 50 - only most important warnings regarding data properties are shown (excluding SHAP warnings)</span>
+<span class="sd">            - 51 - 100 - shows most important warnings, prints of the feature removal process</span>
+<span class="sd">            - above 100 - presents all prints and all warnings (including SHAP warnings).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">clf</span> <span class="o">=</span> <span class="n">clf</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.interpret.shap_dependence.DependencePlotter.compute">
+<code class="highlight language-python"><span class="n">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.interpret.shap_dependence.DependencePlotter.compute" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Computes the report returned to the user, namely the SHAP values generated on the dataset.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(pd.DataFrame)</code></td>
+      <td><p>SHAP Values for X.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/interpret/shap_dependence.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the report returned to the user, namely the SHAP values generated on the dataset.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (pd.DataFrame):</span>
+<span class="sd">            SHAP Values for X.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_check_if_fitted</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shap_vals_df</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.interpret.shap_dependence.DependencePlotter.fit">
+<code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">class_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">precalc_shap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">shap_kwargs</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.interpret.shap_dependence.DependencePlotter.fit" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Fits the plotter to the model and data by computing the shap values.</p>
+<p>If the shap_values are passed, they do not need to be computed.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>X</code></td>
+        <td><code>pd.DataFrame</code></td>
+        <td><p>input variables.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>y</code></td>
+        <td><code>pd.Series</code></td>
+        <td><p>target variable.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>column_names</code></td>
+        <td><code>None, or list of str</code></td>
+        <td><p>List of feature names for the dataset. If None, then column names from the X_train dataframe are used.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>class_names</code></td>
+        <td><code>None, or list of str</code></td>
+        <td><p>List of class names e.g. ['neg', 'pos']. If none, the default ['Negative Class', 'Positive Class'] are
+used.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>precalc_shap</code></td>
+        <td><code>Optional, None or np.array</code></td>
+        <td><p>Precalculated shap values, If provided they don't need to be computed.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>**shap_kwargs</code></td>
+        <td></td>
+        <td><p>keyword arguments passed to
+<a href="https://shap.readthedocs.io/en/latest/generated/shap.Explainer.html#shap.Explainer">shap.Explainer</a>.
+It also enables <code>approximate</code> and <code>check_additivity</code> parameters, passed while calculating SHAP values.
+The <code>approximate=True</code> causes less accurate, but faster SHAP values calculation, while
+<code>check_additivity=False</code> disables the additivity check inside SHAP.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/interpret/shap_dependence.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">class_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">precalc_shap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">shap_kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fits the plotter to the model and data by computing the shap values.</span>
+
+<span class="sd">    If the shap_values are passed, they do not need to be computed.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        X (pd.DataFrame): input variables.</span>
+
+<span class="sd">        y (pd.Series): target variable.</span>
+
+<span class="sd">        column_names (None, or list of str, optional):</span>
+<span class="sd">            List of feature names for the dataset. If None, then column names from the X_train dataframe are used.</span>
+
+<span class="sd">        class_names (None, or list of str, optional):</span>
+<span class="sd">            List of class names e.g. [&#39;neg&#39;, &#39;pos&#39;]. If none, the default [&#39;Negative Class&#39;, &#39;Positive Class&#39;] are</span>
+<span class="sd">            used.</span>
+
+<span class="sd">        precalc_shap (Optional, None or np.array):</span>
+<span class="sd">            Precalculated shap values, If provided they don&#39;t need to be computed.</span>
+
+<span class="sd">        **shap_kwargs:</span>
+<span class="sd">            keyword arguments passed to</span>
+<span class="sd">            [shap.Explainer](https://shap.readthedocs.io/en/latest/generated/shap.Explainer.html#shap.Explainer).</span>
+<span class="sd">            It also enables `approximate` and `check_additivity` parameters, passed while calculating SHAP values.</span>
+<span class="sd">            The `approximate=True` causes less accurate, but faster SHAP values calculation, while</span>
+<span class="sd">            `check_additivity=False` disables the additivity check inside SHAP.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span> <span class="o">=</span> <span class="n">preprocess_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X_name</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="n">column_names</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">preprocess_labels</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_name</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="c1"># Set class names</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="o">=</span> <span class="n">class_names</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Negative Class&quot;</span><span class="p">,</span> <span class="s2">&quot;Positive Class&quot;</span><span class="p">]</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">shap_vals_df</span> <span class="o">=</span> <span class="n">shap_to_df</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">precalc_shap</span><span class="o">=</span><span class="n">precalc_shap</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="o">**</span><span class="n">shap_kwargs</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.interpret.shap_dependence.DependencePlotter.fit_compute">
+<code class="highlight language-python"><span class="n">fit_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">class_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">precalc_shap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">shap_kwargs</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.interpret.shap_dependence.DependencePlotter.fit_compute" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Fits the plotter to the model and data by computing the shap values.</p>
+<p>If the shap_values are passed, they do not need to be computed</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>X</code></td>
+        <td><code>pd.DataFrame</code></td>
+        <td><p>Provided dataset.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>y</code></td>
+        <td><code>pd.Series</code></td>
+        <td><p>Binary labels for X.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>column_names</code></td>
+        <td><code>None, or list of str</code></td>
+        <td><p>List of feature names for the dataset. If None, then column names from the X_train dataframe are used.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>class_names</code></td>
+        <td><code>None, or list of str</code></td>
+        <td><p>List of class names e.g. ['neg', 'pos']. If none, the default ['Negative Class', 'Positive Class'] are
+used.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>precalc_shap</code></td>
+        <td><code>Optional, None or np.array</code></td>
+        <td><p>Precalculated shap values, If provided they don't need to be computed.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>**shap_kwargs</code></td>
+        <td></td>
+        <td><p>keyword arguments passed to
+<a href="https://shap.readthedocs.io/en/latest/generated/shap.Explainer.html#shap.Explainer">shap.Explainer</a>.
+It also enables <code>approximate</code> and <code>check_additivity</code> parameters, passed while calculating SHAP values.
+The <code>approximate=True</code> causes less accurate, but faster SHAP values calculation, while
+<code>check_additivity=False</code> disables the additivity check inside SHAP.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(pd.DataFrame)</code></td>
+      <td><p>SHAP Values for X.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/interpret/shap_dependence.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fit_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">class_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">precalc_shap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">shap_kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fits the plotter to the model and data by computing the shap values.</span>
+
+<span class="sd">    If the shap_values are passed, they do not need to be computed</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        X (pd.DataFrame):</span>
+<span class="sd">            Provided dataset.</span>
+
+<span class="sd">        y (pd.Series):</span>
+<span class="sd">            Binary labels for X.</span>
+
+<span class="sd">        column_names (None, or list of str, optional):</span>
+<span class="sd">            List of feature names for the dataset. If None, then column names from the X_train dataframe are used.</span>
+
+<span class="sd">        class_names (None, or list of str, optional):</span>
+<span class="sd">            List of class names e.g. [&#39;neg&#39;, &#39;pos&#39;]. If none, the default [&#39;Negative Class&#39;, &#39;Positive Class&#39;] are</span>
+<span class="sd">            used.</span>
+
+<span class="sd">        precalc_shap (Optional, None or np.array):</span>
+<span class="sd">            Precalculated shap values, If provided they don&#39;t need to be computed.</span>
+
+<span class="sd">        **shap_kwargs:</span>
+<span class="sd">            keyword arguments passed to</span>
+<span class="sd">            [shap.Explainer](https://shap.readthedocs.io/en/latest/generated/shap.Explainer.html#shap.Explainer).</span>
+<span class="sd">            It also enables `approximate` and `check_additivity` parameters, passed while calculating SHAP values.</span>
+<span class="sd">            The `approximate=True` causes less accurate, but faster SHAP values calculation, while</span>
+<span class="sd">            `check_additivity=False` disables the additivity check inside SHAP.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (pd.DataFrame):</span>
+<span class="sd">            SHAP Values for X.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="n">column_names</span><span class="p">,</span> <span class="n">class_names</span><span class="o">=</span><span class="n">class_names</span><span class="p">,</span> <span class="n">precalc_shap</span><span class="o">=</span><span class="n">precalc_shap</span><span class="p">,</span> <span class="o">**</span><span class="n">shap_kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.interpret.shap_dependence.DependencePlotter.plot">
+<code class="highlight language-python"><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">type_binning</span><span class="o">=</span><span class="s1">&#39;simple&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">min_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_q</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.interpret.shap_dependence.DependencePlotter.plot" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Plots the shap values for data points for a given feature, as well as the target rate and values distribution.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>feature</code></td>
+        <td><code>str or int</code></td>
+        <td><p>Feature name of the feature to be analyzed.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>figsize</code></td>
+        <td><code>float, float)</code></td>
+        <td><p>Tuple specifying size (width, height) of resulting figure in inches.</p></td>
+        <td><code>(15, 10)</code></td>
+      </tr>
+      <tr>
+        <td><code>bins</code></td>
+        <td><code>int or list[float]</code></td>
+        <td><p>Number of bins or boundaries of bins (supplied in list) for target-rate plot.</p></td>
+        <td><code>10</code></td>
+      </tr>
+      <tr>
+        <td><code>type_binning</code></td>
+        <td><code>{&#39;simple&#39;, &#39;agglomerative&#39;, &#39;quantile&#39;}</code></td>
+        <td><p>Type of binning to be used in target-rate plot (see :mod:<code>binning</code> for more information).</p></td>
+        <td><code>&#39;simple&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>show</code></td>
+        <td><code>bool</code></td>
+        <td><p>If True, the plots are showed to the user, otherwise they are not shown. Not showing plot can be useful,
+when you want to edit the returned axis, before showing it.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>min_q</code></td>
+        <td><code>float</code></td>
+        <td><p>Optional minimum quantile from which to consider values, used for plotting under outliers.</p></td>
+        <td><code>0</code></td>
+      </tr>
+      <tr>
+        <td><code>max_q</code></td>
+        <td><code>float</code></td>
+        <td><p>Optional maximum quantile until which data points are considered, used for plotting under outliers.</p></td>
+        <td><code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>alpha</code></td>
+        <td><code>float</code></td>
+        <td><p>Optional alpha blending value, between 0 (transparent) and 1 (opaque).</p></td>
+        <td><code>1.0</code></td>
+      </tr>
+  </tbody>
+</table>      <p>Returns
+    (list(matplotlib.axes)):
+        List of axes that include the plots.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>probatus/interpret/shap_dependence.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">feature</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">type_binning</span><span class="o">=</span><span class="s2">&quot;simple&quot;</span><span class="p">,</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">min_q</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">max_q</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots the shap values for data points for a given feature, as well as the target rate and values distribution.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        feature (str or int):</span>
+<span class="sd">            Feature name of the feature to be analyzed.</span>
+
+<span class="sd">        figsize ((float, float), optional):</span>
+<span class="sd">            Tuple specifying size (width, height) of resulting figure in inches.</span>
+
+<span class="sd">        bins (int or list[float]):</span>
+<span class="sd">            Number of bins or boundaries of bins (supplied in list) for target-rate plot.</span>
+
+<span class="sd">        type_binning ({&#39;simple&#39;, &#39;agglomerative&#39;, &#39;quantile&#39;}):</span>
+<span class="sd">            Type of binning to be used in target-rate plot (see :mod:`binning` for more information).</span>
+
+<span class="sd">        show (bool, optional):</span>
+<span class="sd">            If True, the plots are showed to the user, otherwise they are not shown. Not showing plot can be useful,</span>
+<span class="sd">            when you want to edit the returned axis, before showing it.</span>
+
+<span class="sd">        min_q (float, optional):</span>
+<span class="sd">            Optional minimum quantile from which to consider values, used for plotting under outliers.</span>
+
+<span class="sd">        max_q (float, optional):</span>
+<span class="sd">            Optional maximum quantile until which data points are considered, used for plotting under outliers.</span>
+
+<span class="sd">        alpha (float, optional):</span>
+<span class="sd">            Optional alpha blending value, between 0 (transparent) and 1 (opaque).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">        (list(matplotlib.axes)):</span>
+<span class="sd">            List of axes that include the plots.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_check_if_fitted</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">min_q</span> <span class="o">&gt;=</span> <span class="n">max_q</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;min_q must be smaller than max_q&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">feature</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Feature not recognized&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">type_binning</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;simple&quot;</span><span class="p">,</span> <span class="s2">&quot;agglomerative&quot;</span><span class="p">,</span> <span class="s2">&quot;quantile&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Select one of the following binning methods: &#39;simple&#39;, &#39;agglomerative&#39;, &#39;quantile&#39;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;alpha must be a float value betwee 0 and 1&quot;</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">min_q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">min_q</span><span class="p">,</span> <span class="n">max_q</span><span class="p">,</span> <span class="n">alpha</span>
+
+    <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+    <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">rowspan</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_dependence_plot</span><span class="p">(</span><span class="n">feature</span><span class="o">=</span><span class="n">feature</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_target_rate_plot</span><span class="p">(</span><span class="n">feature</span><span class="o">=</span><span class="n">feature</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">type_binning</span><span class="o">=</span><span class="n">type_binning</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
+
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">ax1</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="feature_elimination.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: probatus.feature_elimination" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              probatus.feature_elimination
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="metric_volatility.html" class="md-footer__link md-footer__link--next" aria-label="Next: probatus.metric_volatility" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              probatus.metric_volatility
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2020 ING Bank N.V.
+          </div>
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.e99e714c.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c7d1b464.min.js"></script>
+      
+    
+  </body>
+</html>

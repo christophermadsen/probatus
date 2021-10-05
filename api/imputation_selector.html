@@ -1,0 +1,1694 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Validation of binary classifiers and data used to develop them">
+      
+      
+      
+        <meta name="author" content="ING Bank N. V.">
+      
+      
+        <link rel="canonical" href="https://ing-bank.github.io/probatus/api/imputation_selector.html">
+      
+      <link rel="icon" href="../img/Probatus_P_white.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.3.1">
+    
+    
+      
+        <title>probatus.missing_values - Probatus Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.1c75ef36.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#ff6e42">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,400i,700%7CUbuntu+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Ubuntu";--md-code-font-family:"Ubuntu Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#imputation-selector" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Probatus Docs" class="md-header__button md-logo" aria-label="Probatus Docs" data-md-component="logo">
+      
+  <img src="../img/Probatus_P_white.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Probatus Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              probatus.missing_values
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/ing-bank/probatus/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../tutorials/nb_shap_feature_elimination.html" class="md-tabs__link">
+        Tutorials
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../howto/reproducibility.html" class="md-tabs__link">
+        HowTo
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="feature_elimination.html" class="md-tabs__link md-tabs__link--active">
+        API
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../discussion/vision.html" class="md-tabs__link">
+        Discussion
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Probatus Docs" class="md-nav__button md-logo" aria-label="Probatus Docs" data-md-component="logo">
+      
+  <img src="../img/Probatus_P_white.png" alt="logo">
+
+    </a>
+    Probatus Docs
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ing-bank/probatus/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_shap_feature_elimination.html" class="md-nav__link">
+        ShapRFECV - Recursive Feature Elimination using SHAP importance
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_shap_model_interpreter.html" class="md-nav__link">
+        Tree-based & Linear Model Interpretation with SHAP
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_imputation_comparison.html" class="md-nav__link">
+        Imputation Strategy Comparison
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_metric_volatility.html" class="md-nav__link">
+        Model Metrics Volatility
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_sample_similarity.html" class="md-nav__link">
+        Multivariate Sample Similarity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_distribution_statistics.html" class="md-nav__link">
+        Univariate Sample Similarity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_custom_scoring.html" class="md-nav__link">
+        Custom Scoring Metrics
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          HowTo
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="HowTo" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          HowTo
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/reproducibility.html" class="md-nav__link">
+        Reproduce the results
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/grouped_data.html" class="md-nav__link">
+        Work with grouped data
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          API
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature_elimination.html" class="md-nav__link">
+        probatus.feature_elimination
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model_interpret.html" class="md-nav__link">
+        probatus.interpret
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="metric_volatility.html" class="md-nav__link">
+        probatus.metric_volatility
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          probatus.missing_values
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="imputation_selector.html" class="md-nav__link md-nav__link--active">
+        probatus.missing_values
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.missing_values.imputation.ImputationSelector" class="md-nav__link">
+    ImputationSelector
+  </a>
+  
+    <nav class="md-nav" aria-label="ImputationSelector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.missing_values.imputation.ImputationSelector.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.missing_values.imputation.ImputationSelector.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.missing_values.imputation.ImputationSelector.fit" class="md-nav__link">
+    fit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.missing_values.imputation.ImputationSelector.fit_compute" class="md-nav__link">
+    fit_compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.missing_values.imputation.ImputationSelector.plot" class="md-nav__link">
+    plot()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sample_similarity.html" class="md-nav__link">
+        probatus.sample_similarity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="stat_tests.html" class="md-nav__link">
+        probatus.stat_tests
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="utils.html" class="md-nav__link">
+        probatus.utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Discussion
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Discussion" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Discussion
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../discussion/vision.html" class="md-nav__link">
+        Vision
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../discussion/nb_rfecv_vs_shaprfecv.html" class="md-nav__link">
+        ShapRFECV vs sklearn RFECV
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../discussion/contributing.html" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.missing_values.imputation.ImputationSelector" class="md-nav__link">
+    ImputationSelector
+  </a>
+  
+    <nav class="md-nav" aria-label="ImputationSelector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.missing_values.imputation.ImputationSelector.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.missing_values.imputation.ImputationSelector.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.missing_values.imputation.ImputationSelector.fit" class="md-nav__link">
+    fit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.missing_values.imputation.ImputationSelector.fit_compute" class="md-nav__link">
+    fit_compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.missing_values.imputation.ImputationSelector.plot" class="md-nav__link">
+    plot()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ing-bank/probatus/edit/master/docs/api/imputation_selector.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="imputation-selector">Imputation Selector<a class="headerlink" href="#imputation-selector" title="Permanent link">&para;</a></h1>
+<p>This module allows us to select imputation strategies.</p>
+
+
+  <div class="doc doc-object doc-module">
+
+
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 class="doc doc-heading" id="probatus.missing_values.imputation.ImputationSelector">
+        <code>
+ImputationSelector            (<span title="probatus.utils.interface.BaseFitComputePlotClass">BaseFitComputePlotClass</span>)
+        </code>
+
+
+
+<a class="headerlink" href="#probatus.missing_values.imputation.ImputationSelector" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Comparison of various imputation strategies that can be used for imputing missing values.</p>
+<p>The aim of this class is to present the model performance based on imputation
+strategies and a choosen model.
+For models like XGBoost &amp; LighGBM which have capabilities to handle missing values by default
+the model performance with no imputation will be shown as well.
+The missing values categorical features are imputed with the value <code>missing</code> and an missing indicator is
+added.</p>
+
+<p><strong>Examples:</strong></p>
+    
+      <div class="highlight"><pre><span></span><code><span class="c1">#Import the class</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">probatus.missing_values.imputation</span> <span class="kn">import</span> <span class="n">ImputationSelector</span>
+<span class="kn">from</span> <span class="nn">probatus.utils.missing_helpers</span> <span class="kn">import</span> <span class="n">generate_MCAR</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.experimental</span> <span class="kn">import</span> <span class="n">enable_iterative_imputer</span>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">KNNImputer</span><span class="p">,</span><span class="n">SimpleImputer</span><span class="p">,</span><span class="n">IterativeImputer</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+
+<span class="c1"># Create data with missing values.</span>
+<span class="n">n_features</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">n_features</span><span class="o">=</span><span class="n">n_features</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span><span class="n">class_sep</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;f_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n_features</span><span class="p">)])</span>
+<span class="n">X_missing</span> <span class="o">=</span> <span class="n">generate_MCAR</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">missing</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+<span class="c1"># Create the strategies.</span>
+<span class="n">strategies</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="s1">&#39;Simple Median Imputer&#39;</span> <span class="p">:</span> <span class="n">SimpleImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">,</span><span class="n">add_indicator</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+   <span class="s1">&#39;Simple Mean Imputer&#39;</span> <span class="p">:</span> <span class="n">SimpleImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span><span class="n">add_indicator</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+   <span class="s1">&#39;Iterative Imputer&#39;</span>  <span class="p">:</span> <span class="n">IterativeImputer</span><span class="p">(</span><span class="n">add_indicator</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">n_nearest_features</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+   <span class="n">sample_posterior</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+   <span class="s1">&#39;KNN&#39;</span> <span class="p">:</span> <span class="n">KNNImputer</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">)}</span>
+<span class="c1">#Create a classifier.</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+<span class="c1">#Create the comparision of the imputation strategies.</span>
+<span class="n">cmp</span> <span class="o">=</span> <span class="n">ImputationSelector</span><span class="p">(</span>
+    <span class="n">clf</span><span class="o">=</span><span class="n">clf</span><span class="p">,</span>
+    <span class="n">strategies</span><span class="o">=</span><span class="n">strategies</span><span class="p">,</span>
+    <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">model_na_support</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">cmp</span><span class="o">.</span><span class="n">fit_compute</span><span class="p">(</span><span class="n">X_missing</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="c1">#Plot the results.</span>
+<span class="n">performance_plot</span><span class="o">=</span><span class="n">cmp</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</code></pre></div>
+<p><img src="../img/imputation_comparision.png" width="500" /></p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.missing_values.imputation.ImputationSelector.__init__">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clf</span><span class="p">,</span> <span class="n">strategies</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">model_na_support</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.missing_values.imputation.ImputationSelector.__init__" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initialise the class.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>clf</code></td>
+        <td><code>binary classifier,sklearn.Pipeline</code></td>
+        <td><p>A binary classification model, that will used to evaluate various imputation strategies.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>strategies</code></td>
+        <td><code>dictionary of sklearn.impute objects or any other scikit learn compatible imputer.</code></td>
+        <td><p>Dictionary containing the sklearn.impute objects.
+e.g.
+strategies = {'KNN' : KNNImputer(n_neighbors=3),
+'Simple Median Imputer' : SimpleImputer(strategy='median',add_indicator=True),
+'Iterative Imputer'  : IterativeImputer(add_indicator=True,n_nearest_features=5,
+sample_posterior=True)}
+This allows you to have fine grained control over the imputation method.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>scoring</code></td>
+        <td><code>string, list of strings, probatus.utils.Scorer or list of probatus.utils.Scorers</code></td>
+        <td><p>Metrics for which the score is calculated. It can be either a name or list of names metric names and
+needs to be aligned with predefined <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">classification scorers names in sklearn</a>.
+Another option is using probatus.utils.Scorer to define a custom metric.</p></td>
+        <td><code>&#39;roc_auc&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>model_na_support</code></td>
+        <td><code>boolean</code></td>
+        <td><p>default False
+If the classifier supports missing values by default e.g. LightGBM,XGBoost etc.
+If True an default comparison <code>No Imputation</code>  result will be added indicating the model performance without any explict imputation.
+If False only the provided strategies will be used.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>n_jobs</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of cores to run in parallel while fitting across folds. None means 1 unless in a
+<code>joblib.parallel_backend</code> context. -1 means using all processors.</p></td>
+        <td><code>-1</code></td>
+      </tr>
+      <tr>
+        <td><code>verbose</code></td>
+        <td><code>int</code></td>
+        <td><p>Controls verbosity of the output:</p>
+<ul>
+<li>0 - nether prints nor warnings are shown</li>
+<li>1 - 50 - only most important warnings regarding data properties are shown (excluding SHAP warnings)</li>
+<li>51 - 100 - shows most important warnings, prints of the feature removal process</li>
+<li>above 100 - presents all prints and all warnings (including SHAP warnings).</li>
+</ul></td>
+        <td><code>0</code></td>
+      </tr>
+      <tr>
+        <td><code>random_state</code></td>
+        <td><code>int</code></td>
+        <td><p>Random state set at each round of feature elimination. If it is None, the results will not be
+reproducible and in random search at each iteration a different hyperparameters might be tested. For
+reproducible results set it to integer.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/missing_values/imputation.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">clf</span><span class="p">,</span>
+    <span class="n">strategies</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;roc_auc&quot;</span><span class="p">,</span>
+    <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">model_na_support</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialise the class.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        clf (binary classifier,sklearn.Pipeline):</span>
+<span class="sd">            A binary classification model, that will used to evaluate various imputation strategies.</span>
+
+<span class="sd">        strategies (dictionary of sklearn.impute objects or any other scikit learn compatible imputer.):</span>
+<span class="sd">            Dictionary containing the sklearn.impute objects.</span>
+<span class="sd">            e.g.</span>
+<span class="sd">            strategies = {&#39;KNN&#39; : KNNImputer(n_neighbors=3),</span>
+<span class="sd">            &#39;Simple Median Imputer&#39; : SimpleImputer(strategy=&#39;median&#39;,add_indicator=True),</span>
+<span class="sd">            &#39;Iterative Imputer&#39;  : IterativeImputer(add_indicator=True,n_nearest_features=5,</span>
+<span class="sd">            sample_posterior=True)}</span>
+<span class="sd">            This allows you to have fine grained control over the imputation method.</span>
+
+<span class="sd">        scoring (string, list of strings, probatus.utils.Scorer or list of probatus.utils.Scorers, optional):</span>
+<span class="sd">            Metrics for which the score is calculated. It can be either a name or list of names metric names and</span>
+<span class="sd">            needs to be aligned with predefined [classification scorers names in sklearn](https://scikit-learn.org/stable/modules/model_evaluation.html).</span>
+<span class="sd">            Another option is using probatus.utils.Scorer to define a custom metric.</span>
+
+<span class="sd">        model_na_support (boolean): default False</span>
+<span class="sd">            If the classifier supports missing values by default e.g. LightGBM,XGBoost etc.</span>
+<span class="sd">            If True an default comparison `No Imputation`  result will be added indicating the model performance without any explict imputation.</span>
+<span class="sd">            If False only the provided strategies will be used.</span>
+
+<span class="sd">        n_jobs (int, optional):</span>
+<span class="sd">            Number of cores to run in parallel while fitting across folds. None means 1 unless in a</span>
+<span class="sd">            `joblib.parallel_backend` context. -1 means using all processors.</span>
+
+<span class="sd">        verbose (int, optional):</span>
+<span class="sd">            Controls verbosity of the output:</span>
+
+<span class="sd">            - 0 - nether prints nor warnings are shown</span>
+<span class="sd">            - 1 - 50 - only most important warnings regarding data properties are shown (excluding SHAP warnings)</span>
+<span class="sd">            - 51 - 100 - shows most important warnings, prints of the feature removal process</span>
+<span class="sd">            - above 100 - presents all prints and all warnings (including SHAP warnings).</span>
+
+<span class="sd">        random_state (int, optional):</span>
+<span class="sd">            Random state set at each round of feature elimination. If it is None, the results will not be</span>
+<span class="sd">            reproducible and in random search at each iteration a different hyperparameters might be tested. For</span>
+<span class="sd">            reproducible results set it to integer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">clf</span> <span class="o">=</span> <span class="n">clf</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">model_na_support</span> <span class="o">=</span> <span class="n">model_na_support</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">cv</span> <span class="o">=</span> <span class="n">cv</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span> <span class="o">=</span> <span class="n">get_single_scorer</span><span class="p">(</span><span class="n">scoring</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">strategies</span> <span class="o">=</span> <span class="n">strategies</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span> <span class="o">=</span> <span class="n">n_jobs</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">report_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([])</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.missing_values.imputation.ImputationSelector.compute">
+<code class="highlight language-python"><span class="n">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.missing_values.imputation.ImputationSelector.compute" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Checks if fit() method has been run.</p>
+<p>and computes the DataFrame with results of imputation for each
+strategy.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(pd.DataFrame)</code></td>
+      <td><p>DataFrame with results of imputation for each strategy.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/missing_values/imputation.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if fit() method has been run.</span>
+
+<span class="sd">    and computes the DataFrame with results of imputation for each</span>
+<span class="sd">    strategy.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (pd.DataFrame):</span>
+<span class="sd">             DataFrame with results of imputation for each strategy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_check_if_fitted</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">report_df</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.missing_values.imputation.ImputationSelector.fit">
+<code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.missing_values.imputation.ImputationSelector.fit" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculates the cross validated results for various imputation strategies.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>X</code></td>
+        <td><code>pd.DataFrame</code></td>
+        <td><p>input variables.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>y</code></td>
+        <td><code>pd.Series</code></td>
+        <td><p>target variable.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>column_names</code></td>
+        <td><code>None, or list of str</code></td>
+        <td><p>List of feature names for the dataset.
+If None, then column names from the X dataframe are used.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/missing_values/imputation.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the cross validated results for various imputation strategies.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        X (pd.DataFrame):</span>
+<span class="sd">            input variables.</span>
+
+<span class="sd">        y (pd.Series):</span>
+<span class="sd">            target variable.</span>
+
+<span class="sd">        column_names (None, or list of str, optional):</span>
+<span class="sd">            List of feature names for the dataset.</span>
+<span class="sd">            If None, then column names from the X dataframe are used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+
+    <span class="c1"># Place holder for results.</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span> <span class="o">=</span> <span class="n">preprocess_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="n">column_names</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">preprocess_labels</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="c1"># Identify categorical features.</span>
+    <span class="n">categorical_columns</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">,</span> <span class="s2">&quot;object&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span>
+    <span class="c1"># Identify the numeric columns.Numeric columns are all columns expect the categorical columns</span>
+    <span class="n">numeric_columns</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+
+    <span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategies</span><span class="p">:</span>
+
+        <span class="n">numeric_transformer</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;imputer&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategies</span><span class="p">[</span><span class="n">strategy</span><span class="p">])])</span>
+
+        <span class="n">categorical_transformer</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+            <span class="n">steps</span><span class="o">=</span><span class="p">[</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;imp_cat&quot;</span><span class="p">,</span>
+                    <span class="n">SimpleImputer</span><span class="p">(</span>
+                        <span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
+                        <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;missing&quot;</span><span class="p">,</span>
+                        <span class="n">add_indicator</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="p">),</span>
+                <span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;ohe_cat&quot;</span><span class="p">,</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">handle_unknown</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="n">preprocessor</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
+            <span class="n">transformers</span><span class="o">=</span><span class="p">[</span>
+                <span class="p">(</span><span class="s2">&quot;num&quot;</span><span class="p">,</span> <span class="n">numeric_transformer</span><span class="p">,</span> <span class="n">numeric_columns</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="n">categorical_transformer</span><span class="p">,</span> <span class="n">categorical_columns</span><span class="p">),</span>
+            <span class="p">],</span>
+            <span class="n">remainder</span><span class="o">=</span><span class="s2">&quot;passthrough&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">model_pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;preprocessor&quot;</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;classifier&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">clf</span><span class="p">)])</span>
+
+        <span class="n">temp_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_results</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">clf</span><span class="o">=</span><span class="n">model_pipeline</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="n">strategy</span><span class="p">)</span>
+
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_results</span><span class="p">)</span>
+
+    <span class="c1"># If model supports missing values by default, then calculate the scores</span>
+    <span class="c1"># on raw data without any imputation.</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_na_support</span><span class="p">:</span>
+
+        <span class="n">categorical_transformer</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+            <span class="n">steps</span><span class="o">=</span><span class="p">[</span>
+                <span class="p">(</span><span class="s2">&quot;ohe_cat&quot;</span><span class="p">,</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">handle_unknown</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="n">preprocessor</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
+            <span class="n">transformers</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="n">categorical_transformer</span><span class="p">,</span> <span class="n">categorical_columns</span><span class="p">)],</span>
+            <span class="n">remainder</span><span class="o">=</span><span class="s2">&quot;passthrough&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">model_pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;preprocessor&quot;</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;classifier&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">clf</span><span class="p">)])</span>
+
+        <span class="n">temp_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_results</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">clf</span><span class="o">=</span><span class="n">model_pipeline</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;No Imputation&quot;</span><span class="p">)</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_results</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">report_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+    <span class="c1"># Set the index of the dataframe to the imputation methods.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">report_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">report_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">report_df</span><span class="o">.</span><span class="n">strategy</span><span class="p">,</span> <span class="s2">&quot;strategy&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">report_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;strategy&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">report_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;mean_test_score&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.missing_values.imputation.ImputationSelector.fit_compute">
+<code class="highlight language-python"><span class="n">fit_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.missing_values.imputation.ImputationSelector.fit_compute" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculates the cross validated results for various imputation strategies.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>X</code></td>
+        <td><code>pd.DataFrame</code></td>
+        <td><p>input variables.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>y</code></td>
+        <td><code>pd.Series</code></td>
+        <td><p>target variable.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>column_names</code></td>
+        <td><code>None, or list of str</code></td>
+        <td><p>List of feature names for the dataset.
+If None, then column names from the X dataframe are used.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(pd.DataFrame)</code></td>
+      <td><p>DataFrame with results of imputation for each strategy.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/missing_values/imputation.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fit_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the cross validated results for various imputation strategies.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        X (pd.DataFrame):</span>
+<span class="sd">            input variables.</span>
+
+<span class="sd">        y (pd.Series):</span>
+<span class="sd">            target variable.</span>
+
+<span class="sd">        column_names (None, or list of str, optional):</span>
+<span class="sd">            List of feature names for the dataset.</span>
+<span class="sd">            If None, then column names from the X dataframe are used.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (pd.DataFrame):</span>
+<span class="sd">            DataFrame with results of imputation for each strategy.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="n">column_names</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.missing_values.imputation.ImputationSelector.plot">
+<code class="highlight language-python"><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">figure_kwargs</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.missing_values.imputation.ImputationSelector.plot" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Generates plot of the performance of various imputation strategies.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>show</code></td>
+        <td><code>bool</code></td>
+        <td><p>If True, the plots are showed to the user, otherwise they are not shown. Not showing plot can be useful,
+when you want to edit the returned axis, before showing it.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>**figure_kwargs</code></td>
+        <td></td>
+        <td><p>Keyword arguments that are passed to the plt.figure, at its initialization.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(plt.axis)</code></td>
+      <td><p>Axis containing the performance plot.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/missing_values/imputation.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">figure_kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates plot of the performance of various imputation strategies.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        show (bool, optional):</span>
+<span class="sd">            If True, the plots are showed to the user, otherwise they are not shown. Not showing plot can be useful,</span>
+<span class="sd">            when you want to edit the returned axis, before showing it.</span>
+
+<span class="sd">        **figure_kwargs:</span>
+<span class="sd">            Keyword arguments that are passed to the plt.figure, at its initialization.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (plt.axis):</span>
+<span class="sd">            Axis containing the performance plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="o">**</span><span class="n">figure_kwargs</span><span class="p">)</span>
+
+    <span class="n">report_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+    <span class="n">imp_methods</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">report_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">test_performance</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">report_df</span><span class="p">[</span><span class="s2">&quot;mean_test_score&quot;</span><span class="p">])</span>
+    <span class="n">test_std_error</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">report_df</span><span class="p">[</span><span class="s2">&quot;test_score_std&quot;</span><span class="p">])</span>
+    <span class="n">train_performance</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">report_df</span><span class="p">[</span><span class="s2">&quot;mean_train_score&quot;</span><span class="p">])</span>
+    <span class="n">train_std_error</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">report_df</span><span class="p">[</span><span class="s2">&quot;train_score_std&quot;</span><span class="p">])</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">imp_methods</span><span class="p">))</span>  <span class="c1"># the label locations</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="mf">0.35</span>  <span class="c1"># the width of the bars</span>
+
+    <span class="k">def</span> <span class="nf">_autolabel</span><span class="p">(</span><span class="n">rects</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Label the bars of the plot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">rect</span> <span class="ow">in</span> <span class="n">rects</span><span class="p">:</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">width</span><span class="p">),</span>
+                <span class="n">xy</span><span class="o">=</span><span class="p">((</span><span class="n">width</span> <span class="o">+</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">width</span><span class="p">),</span> <span class="n">rect</span><span class="o">.</span><span class="n">get_y</span><span class="p">()</span> <span class="o">+</span> <span class="n">rect</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+                <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>  <span class="c1"># 4 points horizontal offset</span>
+                <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">,</span>
+                <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                <span class="n">va</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span>
+                <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;small&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="n">train_rect</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span>
+        <span class="n">y</span> <span class="o">-</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">train_performance</span><span class="p">,</span>
+        <span class="n">width</span><span class="p">,</span>
+        <span class="n">xerr</span><span class="o">=</span><span class="n">train_std_error</span><span class="p">,</span>
+        <span class="n">align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;CV-Train&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">test_rect</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span>
+        <span class="n">y</span> <span class="o">+</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">test_performance</span><span class="p">,</span>
+        <span class="n">width</span><span class="p">,</span>
+        <span class="n">xerr</span><span class="o">=</span><span class="n">test_std_error</span><span class="p">,</span>
+        <span class="n">align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;CV-Test&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">_autolabel</span><span class="p">(</span><span class="n">train_rect</span><span class="p">)</span>
+    <span class="n">_autolabel</span><span class="p">(</span><span class="n">test_rect</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="o">.</span><span class="n">metric_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span><span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1"> Score&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Imputation Techniques Comparision&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">imp_methods</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ax</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="metric_volatility.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: probatus.metric_volatility" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              probatus.metric_volatility
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="sample_similarity.html" class="md-footer__link md-footer__link--next" aria-label="Next: probatus.sample_similarity" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              probatus.sample_similarity
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2020 ING Bank N.V.
+          </div>
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.e99e714c.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c7d1b464.min.js"></script>
+      
+    
+  </body>
+</html>

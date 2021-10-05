@@ -1,0 +1,3296 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Validation of binary classifiers and data used to develop them">
+      
+      
+      
+        <meta name="author" content="ING Bank N. V.">
+      
+      
+        <link rel="canonical" href="https://ing-bank.github.io/probatus/api/metric_volatility.html">
+      
+      <link rel="icon" href="../img/Probatus_P_white.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.3.1">
+    
+    
+      
+        <title>probatus.metric_volatility - Probatus Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.1c75ef36.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#ff6e42">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,400i,700%7CUbuntu+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Ubuntu";--md-code-font-family:"Ubuntu Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#metric-volatility" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Probatus Docs" class="md-header__button md-logo" aria-label="Probatus Docs" data-md-component="logo">
+      
+  <img src="../img/Probatus_P_white.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Probatus Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              probatus.metric_volatility
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/ing-bank/probatus/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../tutorials/nb_shap_feature_elimination.html" class="md-tabs__link">
+        Tutorials
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../howto/reproducibility.html" class="md-tabs__link">
+        HowTo
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="feature_elimination.html" class="md-tabs__link md-tabs__link--active">
+        API
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../discussion/vision.html" class="md-tabs__link">
+        Discussion
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Probatus Docs" class="md-nav__button md-logo" aria-label="Probatus Docs" data-md-component="logo">
+      
+  <img src="../img/Probatus_P_white.png" alt="logo">
+
+    </a>
+    Probatus Docs
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ing-bank/probatus/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_shap_feature_elimination.html" class="md-nav__link">
+        ShapRFECV - Recursive Feature Elimination using SHAP importance
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_shap_model_interpreter.html" class="md-nav__link">
+        Tree-based & Linear Model Interpretation with SHAP
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_imputation_comparison.html" class="md-nav__link">
+        Imputation Strategy Comparison
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_metric_volatility.html" class="md-nav__link">
+        Model Metrics Volatility
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_sample_similarity.html" class="md-nav__link">
+        Multivariate Sample Similarity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_distribution_statistics.html" class="md-nav__link">
+        Univariate Sample Similarity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_custom_scoring.html" class="md-nav__link">
+        Custom Scoring Metrics
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          HowTo
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="HowTo" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          HowTo
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/reproducibility.html" class="md-nav__link">
+        Reproduce the results
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/grouped_data.html" class="md-nav__link">
+        Work with grouped data
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          API
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature_elimination.html" class="md-nav__link">
+        probatus.feature_elimination
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model_interpret.html" class="md-nav__link">
+        probatus.interpret
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          probatus.metric_volatility
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="metric_volatility.html" class="md-nav__link md-nav__link--active">
+        probatus.metric_volatility
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.BootstrappedVolatility" class="md-nav__link">
+    BootstrappedVolatility
+  </a>
+  
+    <nav class="md-nav" aria-label="BootstrappedVolatility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.BootstrappedVolatility.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.BootstrappedVolatility.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.BootstrappedVolatility.fit" class="md-nav__link">
+    fit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.BootstrappedVolatility.fit_compute" class="md-nav__link">
+    fit_compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.BootstrappedVolatility.plot" class="md-nav__link">
+    plot()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.SplitSeedVolatility" class="md-nav__link">
+    SplitSeedVolatility
+  </a>
+  
+    <nav class="md-nav" aria-label="SplitSeedVolatility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.SplitSeedVolatility.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.SplitSeedVolatility.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.SplitSeedVolatility.fit" class="md-nav__link">
+    fit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.SplitSeedVolatility.fit_compute" class="md-nav__link">
+    fit_compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.SplitSeedVolatility.plot" class="md-nav__link">
+    plot()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.TrainTestVolatility" class="md-nav__link">
+    TrainTestVolatility
+  </a>
+  
+    <nav class="md-nav" aria-label="TrainTestVolatility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.TrainTestVolatility.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.TrainTestVolatility.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.TrainTestVolatility.fit" class="md-nav__link">
+    fit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.TrainTestVolatility.fit_compute" class="md-nav__link">
+    fit_compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.TrainTestVolatility.plot" class="md-nav__link">
+    plot()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="imputation_selector.html" class="md-nav__link">
+        probatus.missing_values
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sample_similarity.html" class="md-nav__link">
+        probatus.sample_similarity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="stat_tests.html" class="md-nav__link">
+        probatus.stat_tests
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="utils.html" class="md-nav__link">
+        probatus.utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Discussion
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Discussion" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Discussion
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../discussion/vision.html" class="md-nav__link">
+        Vision
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../discussion/nb_rfecv_vs_shaprfecv.html" class="md-nav__link">
+        ShapRFECV vs sklearn RFECV
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../discussion/contributing.html" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.BootstrappedVolatility" class="md-nav__link">
+    BootstrappedVolatility
+  </a>
+  
+    <nav class="md-nav" aria-label="BootstrappedVolatility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.BootstrappedVolatility.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.BootstrappedVolatility.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.BootstrappedVolatility.fit" class="md-nav__link">
+    fit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.BootstrappedVolatility.fit_compute" class="md-nav__link">
+    fit_compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.BootstrappedVolatility.plot" class="md-nav__link">
+    plot()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.SplitSeedVolatility" class="md-nav__link">
+    SplitSeedVolatility
+  </a>
+  
+    <nav class="md-nav" aria-label="SplitSeedVolatility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.SplitSeedVolatility.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.SplitSeedVolatility.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.SplitSeedVolatility.fit" class="md-nav__link">
+    fit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.SplitSeedVolatility.fit_compute" class="md-nav__link">
+    fit_compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.SplitSeedVolatility.plot" class="md-nav__link">
+    plot()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.TrainTestVolatility" class="md-nav__link">
+    TrainTestVolatility
+  </a>
+  
+    <nav class="md-nav" aria-label="TrainTestVolatility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.TrainTestVolatility.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.TrainTestVolatility.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.TrainTestVolatility.fit" class="md-nav__link">
+    fit()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.TrainTestVolatility.fit_compute" class="md-nav__link">
+    fit_compute()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.metric_volatility.volatility.TrainTestVolatility.plot" class="md-nav__link">
+    plot()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ing-bank/probatus/edit/master/docs/api/metric_volatility.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="metric-volatility">Metric Volatility<a class="headerlink" href="#metric-volatility" title="Permanent link">&para;</a></h1>
+<p>The aim of this module is the analysis of how well a model performs on a given dataset, and how stable the performance is.</p>
+<p>The following features are implemented:</p>
+<ul>
+<li><a href="#probatus.metric_volatility.volatility.TrainTestVolatility">TrainTestVolatility</a>: Estimation of the volatility of metrics. The estimation is done by splitting the data into train and test multiple times and training and scoring a model based on these metrics.</li>
+<li><a href="#probatus.metric_volatility.volatility.SplitSeedVolatility">SplitSeedVolatility</a>: Estimates the volatility of metrics based on splitting the data into train and test sets multiple times randomly, each time with a different seed.</li>
+<li><a href="#probatus.metric_volatility.volatility.BootstrappedVolatility">BootstrappedVolatility</a>: Estimates the volatility of metrics based on splitting the data into train and test with static seed, and bootstrapping the train and test set.</li>
+</ul>
+
+
+  <div class="doc doc-object doc-module">
+
+
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 class="doc doc-heading" id="probatus.metric_volatility.volatility.BootstrappedVolatility">
+        <code>
+BootstrappedVolatility            (<a title="probatus.metric_volatility.volatility.TrainTestVolatility" href="#probatus.metric_volatility.volatility.TrainTestVolatility">TrainTestVolatility</a>)
+        </code>
+
+
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.BootstrappedVolatility" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Estimation of volatility of metrics by bootstrapping both train and test set.</p>
+<p>By default at every iteration the
+    train test split is the same. The test shows volatility of metric with regards to sampling different rows from
+    static train and test sets.</p>
+
+<p><strong>Examples:</strong></p>
+    
+      <p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">probatus.metric_volatility</span> <span class="kn">import</span> <span class="n">BootstrappedVolatility</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span>
+<span class="n">volatility</span> <span class="o">=</span> <span class="n">BootstrappedVolatility</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">10</span> <span class="p">,</span> <span class="n">test_prc</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">volatility_report</span> <span class="o">=</span> <span class="n">volatility</span><span class="o">.</span><span class="n">fit_compute</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">volatility</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</code></pre></div>
+<img src="../img/metric_volatility_bootstrapped.png" width="500" /></p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.metric_volatility.volatility.BootstrappedVolatility.__init__">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clf</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">,</span> <span class="n">train_sampling_fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">test_sampling_fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">test_prc</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stats_tests_to_apply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.BootstrappedVolatility.__init__" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initializes the class.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>clf</code></td>
+        <td><code>model object</code></td>
+        <td><p>Binary classification model or pipeline.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>iterations</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of iterations in seed bootstrapping. By default 1000.</p></td>
+        <td><code>1000</code></td>
+      </tr>
+      <tr>
+        <td><code>scoring</code></td>
+        <td><code>string, list of strings, probatus.utils.Scorer or list of probatus.utils.Scorers</code></td>
+        <td><p>Metrics for which the score is calculated. It can be either a name or list of names metric names and
+needs to be aligned with predefined classification scorers names in sklearn
+(<a href="https://scikit-learn.org/stable/modules/model_evaluation.html">link</a>).
+Another option is using probatus.utils.Scorer to define a custom metric.</p></td>
+        <td><code>&#39;roc_auc&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>train_sampling_fraction</code></td>
+        <td><code>float</code></td>
+        <td><p>Fraction of train data sampled, if sample_train_type is not None. Default value is 1.</p></td>
+        <td><code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>test_sampling_fraction</code></td>
+        <td><code>float</code></td>
+        <td><p>Fraction of test data sampled, if sample_test_type is not None. Default value is 1.</p></td>
+        <td><code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>test_prc</code></td>
+        <td><code>float</code></td>
+        <td><p>Percentage of input data used as test. By default 0.25.</p></td>
+        <td><code>0.25</code></td>
+      </tr>
+      <tr>
+        <td><code>n_jobs</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of parallel executions. If -1 use all available cores. By default 1.</p></td>
+        <td><code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>stats_tests_to_apply</code></td>
+        <td><code>str or list of str</code></td>
+        <td><p>List of tests to apply, default is None. Available options:</p>
+<ul>
+<li><code>'ES'</code>: Epps-Singleton</li>
+<li><code>'KS'</code>: Kolmogorov-Smirnov</li>
+<li><code>'PSI'</code>: Population Stability Index</li>
+<li><code>'SW'</code>: Shapiro-Wilk</li>
+<li><code>'AD'</code>: Anderson-Darling</li>
+</ul>
+<p>Details on the available tests can be found <a href="/probatus/api/stat_tests.html#available-tests">here</a>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>verbose</code></td>
+        <td><code>int</code></td>
+        <td><p>Controls verbosity of the output:</p>
+<ul>
+<li>0 - neither prints nor warnings are shown</li>
+<li>1 - 50 - only most important warnings</li>
+<li>51 - 100 - shows other warnings and prints</li>
+<li>above 100 - presents all prints and all warnings (including SHAP warnings).</li>
+</ul></td>
+        <td><code>0</code></td>
+      </tr>
+      <tr>
+        <td><code>random_state</code></td>
+        <td><code>int</code></td>
+        <td><p>Random state set at each round of feature elimination. If it is None, the results will not be
+reproducible and in random search at each iteration a different hyperparameters might be tested. For
+reproducible results set it to integer.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/metric_volatility/volatility.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">clf</span><span class="p">,</span>
+    <span class="n">iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;roc_auc&quot;</span><span class="p">,</span>
+    <span class="n">train_sampling_fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">test_sampling_fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">test_prc</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">stats_tests_to_apply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initializes the class.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        clf (model object):</span>
+<span class="sd">            Binary classification model or pipeline.</span>
+
+<span class="sd">        iterations (int, optional):</span>
+<span class="sd">            Number of iterations in seed bootstrapping. By default 1000.</span>
+
+<span class="sd">        scoring (string, list of strings, probatus.utils.Scorer or list of probatus.utils.Scorers, optional):</span>
+<span class="sd">            Metrics for which the score is calculated. It can be either a name or list of names metric names and</span>
+<span class="sd">            needs to be aligned with predefined classification scorers names in sklearn</span>
+<span class="sd">            ([link](https://scikit-learn.org/stable/modules/model_evaluation.html)).</span>
+<span class="sd">            Another option is using probatus.utils.Scorer to define a custom metric.</span>
+
+<span class="sd">        train_sampling_fraction (float, optional):</span>
+<span class="sd">            Fraction of train data sampled, if sample_train_type is not None. Default value is 1.</span>
+
+<span class="sd">        test_sampling_fraction (float, optional):</span>
+<span class="sd">            Fraction of test data sampled, if sample_test_type is not None. Default value is 1.</span>
+
+<span class="sd">        test_prc (float, optional):</span>
+<span class="sd">            Percentage of input data used as test. By default 0.25.</span>
+
+<span class="sd">        n_jobs (int, optional):</span>
+<span class="sd">            Number of parallel executions. If -1 use all available cores. By default 1.</span>
+
+<span class="sd">        stats_tests_to_apply (str or list of str, optional):</span>
+<span class="sd">            List of tests to apply, default is None. Available options:</span>
+
+<span class="sd">            - `&#39;ES&#39;`: Epps-Singleton</span>
+<span class="sd">            - `&#39;KS&#39;`: Kolmogorov-Smirnov</span>
+<span class="sd">            - `&#39;PSI&#39;`: Population Stability Index</span>
+<span class="sd">            - `&#39;SW&#39;`: Shapiro-Wilk</span>
+<span class="sd">            - `&#39;AD&#39;`: Anderson-Darling</span>
+
+<span class="sd">            Details on the available tests can be found [here](/probatus/api/stat_tests.html#available-tests).</span>
+
+<span class="sd">        verbose (int, optional):</span>
+<span class="sd">            Controls verbosity of the output:</span>
+
+<span class="sd">            - 0 - neither prints nor warnings are shown</span>
+<span class="sd">            - 1 - 50 - only most important warnings</span>
+<span class="sd">            - 51 - 100 - shows other warnings and prints</span>
+<span class="sd">            - above 100 - presents all prints and all warnings (including SHAP warnings).</span>
+
+<span class="sd">        random_state (int, optional):</span>
+<span class="sd">            Random state set at each round of feature elimination. If it is None, the results will not be</span>
+<span class="sd">            reproducible and in random search at each iteration a different hyperparameters might be tested. For</span>
+<span class="sd">            reproducible results set it to integer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="n">clf</span><span class="o">=</span><span class="n">clf</span><span class="p">,</span>
+        <span class="n">sample_train_test_split_seed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">train_sampling_type</span><span class="o">=</span><span class="s2">&quot;bootstrap&quot;</span><span class="p">,</span>
+        <span class="n">test_sampling_type</span><span class="o">=</span><span class="s2">&quot;bootstrap&quot;</span><span class="p">,</span>
+        <span class="n">iterations</span><span class="o">=</span><span class="n">iterations</span><span class="p">,</span>
+        <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">,</span>
+        <span class="n">train_sampling_fraction</span><span class="o">=</span><span class="n">train_sampling_fraction</span><span class="p">,</span>
+        <span class="n">test_sampling_fraction</span><span class="o">=</span><span class="n">test_sampling_fraction</span><span class="p">,</span>
+        <span class="n">test_prc</span><span class="o">=</span><span class="n">test_prc</span><span class="p">,</span>
+        <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
+        <span class="n">stats_tests_to_apply</span><span class="o">=</span><span class="n">stats_tests_to_apply</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.metric_volatility.volatility.BootstrappedVolatility.compute">
+<code class="highlight language-python"><span class="n">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.BootstrappedVolatility.compute" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Reports the statistics.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>metrics</code></td>
+        <td><code>str or list of strings</code></td>
+        <td><p>Name or list of names of metrics to be plotted. If not all metrics are presented.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(pandas.Dataframe)</code></td>
+      <td><p>Report that contains the evaluation mean and std on train and test sets for each metric.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/metric_volatility/volatility.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reports the statistics.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        metrics (str or list of strings, optional):</span>
+<span class="sd">            Name or list of names of metrics to be plotted. If not all metrics are presented.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (pandas.Dataframe):</span>
+<span class="sd">            Report that contains the evaluation mean and std on train and test sets for each metric.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_check_if_fitted</span><span class="p">()</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">report</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="p">(</span>
+            <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Report is None, thus it has not been computed by fit method. Please extend the &quot;</span>
+                <span class="s2">&quot;BaseVolatilityEstimator class, overwrite fit method, and within fit run compute_report()&quot;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">metrics</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">report</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">metrics</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">metrics</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.metric_volatility.volatility.BootstrappedVolatility.fit">
+<code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.BootstrappedVolatility.fit" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Fit.</p>
+<p>Bootstraps a number of random seeds, then splits the data based on the sampled seeds and estimates performance
+    of the model based on the split data.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>X</code></td>
+        <td><code>pandas.DataFrame or numpy.ndarray</code></td>
+        <td><p>Array with samples and features.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>y</code></td>
+        <td><code>pandas.Series or numpy.ndarray</code></td>
+        <td><p>Array with targets.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>column_names</code></td>
+        <td><code>list of str</code></td>
+        <td><p>List of feature names of the provided samples. If provided it will be used to overwrite the existing
+feature names. If not provided the existing feature names are used or default feature names are
+generated.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(TrainTestVolatility)</code></td>
+      <td><p>Fitted object.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/metric_volatility/volatility.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fit.</span>
+
+<span class="sd">    Bootstraps a number of random seeds, then splits the data based on the sampled seeds and estimates performance</span>
+<span class="sd">        of the model based on the split data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        X (pandas.DataFrame or numpy.ndarray):</span>
+<span class="sd">            Array with samples and features.</span>
+
+<span class="sd">        y (pandas.Series or numpy.ndarray):</span>
+<span class="sd">            Array with targets.</span>
+
+<span class="sd">        column_names (list of str, optional):</span>
+<span class="sd">            List of feature names of the provided samples. If provided it will be used to overwrite the existing</span>
+<span class="sd">            feature names. If not provided the existing feature names are used or default feature names are</span>
+<span class="sd">            generated.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (TrainTestVolatility):</span>
+<span class="sd">            Fitted object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span> <span class="o">=</span> <span class="n">preprocess_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X_name</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="n">column_names</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">preprocess_labels</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_name</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_train_test_split_seed</span><span class="p">:</span>
+        <span class="n">random_seeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">999999</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">random_seeds</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">:</span>
+            <span class="n">random_seeds</span> <span class="o">=</span> <span class="n">random_seeds</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">random_seeds</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">random_seeds</span><span class="p">)</span>
+
+    <span class="n">results_per_iteration</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">)(</span>
+        <span class="n">delayed</span><span class="p">(</span><span class="n">get_metric</span><span class="p">)(</span>
+            <span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+            <span class="n">clf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">clf</span><span class="p">,</span>
+            <span class="n">test_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_prc</span><span class="p">,</span>
+            <span class="n">split_seed</span><span class="o">=</span><span class="n">split_seed</span><span class="p">,</span>
+            <span class="n">scorers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scorers</span><span class="p">,</span>
+            <span class="n">train_sampling_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_sampling_type</span><span class="p">,</span>
+            <span class="n">test_sampling_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_sampling_type</span><span class="p">,</span>
+            <span class="n">train_sampling_fraction</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_sampling_fraction</span><span class="p">,</span>
+            <span class="n">test_sampling_fraction</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_sampling_fraction</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">split_seed</span> <span class="ow">in</span> <span class="n">random_seeds</span>
+    <span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">iterations_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">results_per_iteration</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_create_report</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.metric_volatility.volatility.BootstrappedVolatility.fit_compute">
+<code class="highlight language-python"><span class="n">fit_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.BootstrappedVolatility.fit_compute" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Fit compute.</p>
+<p>Runs trains and evaluates a number of models on train and test sets extracted using different random seeds.
+    Reports the statistics of the selected metric.</p>
+<p>Takes as arguments the same parameters as fit() method.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(pandas.Dataframe)</code></td>
+      <td><p>Report that contains the evaluation mean and std on train and test sets for each metric.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/metric_volatility/volatility.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fit_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fit compute.</span>
+
+<span class="sd">    Runs trains and evaluates a number of models on train and test sets extracted using different random seeds.</span>
+<span class="sd">        Reports the statistics of the selected metric.</span>
+
+<span class="sd">    Takes as arguments the same parameters as fit() method.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (pandas.Dataframe):</span>
+<span class="sd">            Report that contains the evaluation mean and std on train and test sets for each metric.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.metric_volatility.volatility.BootstrappedVolatility.plot">
+<code class="highlight language-python"><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">height_per_subplot</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">width_per_subplot</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.BootstrappedVolatility.plot" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Plots distribution of the metric.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>metrics</code></td>
+        <td><code>str or list of strings</code></td>
+        <td><p>Name or list of names of metrics to be plotted. If not all metrics are presented.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>bins</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of bins into which histogram is built.</p></td>
+        <td><code>10</code></td>
+      </tr>
+      <tr>
+        <td><code>show</code></td>
+        <td><code>bool</code></td>
+        <td><p>If True, the plots are showed to the user, otherwise they are not shown. Not showing plot can be useful,
+when you want to edit the returned axis, before showing it.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>height_per_subplot</code></td>
+        <td><code>int</code></td>
+        <td><p>Height of each subplot. Default is 5.</p></td>
+        <td><code>5</code></td>
+      </tr>
+      <tr>
+        <td><code>width_per_subplot</code></td>
+        <td><code>int</code></td>
+        <td><p>Width of each subplot. Default is 5.</p></td>
+        <td><code>5</code></td>
+      </tr>
+  </tbody>
+</table>      <p>Returns
+    (list(matplotlib.axes)):
+        Axes that include the plot.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>probatus/metric_volatility/volatility.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">height_per_subplot</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">width_per_subplot</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots distribution of the metric.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        metrics (str or list of strings, optional):</span>
+<span class="sd">            Name or list of names of metrics to be plotted. If not all metrics are presented.</span>
+
+<span class="sd">        bins (int, optional):</span>
+<span class="sd">            Number of bins into which histogram is built.</span>
+
+<span class="sd">        show (bool, optional):</span>
+<span class="sd">            If True, the plots are showed to the user, otherwise they are not shown. Not showing plot can be useful,</span>
+<span class="sd">            when you want to edit the returned axis, before showing it.</span>
+
+<span class="sd">        height_per_subplot (int, optional):</span>
+<span class="sd">            Height of each subplot. Default is 5.</span>
+
+<span class="sd">        width_per_subplot (int, optional):</span>
+<span class="sd">            Width of each subplot. Default is 5.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">        (list(matplotlib.axes)):</span>
+<span class="sd">            Axes that include the plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">target_report</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">target_report</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+            <span class="n">target_report</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="mi">2</span><span class="p">,</span>
+            <span class="n">figsize</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">width_per_subplot</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="n">height_per_subplot</span> <span class="o">*</span> <span class="n">target_report</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Enable traversing the axs</span>
+        <span class="n">axs</span> <span class="o">=</span> <span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">axis_index</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">metric</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">target_report</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_samples_to_plot</span><span class="p">(</span><span class="n">metric_name</span><span class="o">=</span><span class="n">metric</span><span class="p">)</span>
+
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Train </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Distributions </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">))</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Delta </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Distributions delta </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">))</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+
+            <span class="n">axis_index</span> <span class="o">+=</span> <span class="mi">2</span>
+
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axs</span><span class="o">.</span><span class="n">flat</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> score&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">),</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Results count&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">axs</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 class="doc doc-heading" id="probatus.metric_volatility.volatility.SplitSeedVolatility">
+        <code>
+SplitSeedVolatility            (<a title="probatus.metric_volatility.volatility.TrainTestVolatility" href="#probatus.metric_volatility.volatility.TrainTestVolatility">TrainTestVolatility</a>)
+        </code>
+
+
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.SplitSeedVolatility" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Estimation of volatility of metrics depending on the seed used to split the data.</p>
+<p>At every iteration it splits the
+    data into train and test set using a different stratified split and volatility of the metrics is calculated.</p>
+
+<p><strong>Examples:</strong></p>
+    
+      <p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">probatus.metric_volatility</span> <span class="kn">import</span> <span class="n">SplitSeedVolatility</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span>
+<span class="n">volatility</span> <span class="o">=</span> <span class="n">SplitSeedVolatility</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">10</span> <span class="p">,</span> <span class="n">test_prc</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">volatility_report</span> <span class="o">=</span> <span class="n">volatility</span><span class="o">.</span><span class="n">fit_compute</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">volatility</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</code></pre></div>
+<img src="../img/metric_volatility_split_seed.png" width="500" /></p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.metric_volatility.volatility.SplitSeedVolatility.__init__">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clf</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">,</span> <span class="n">test_prc</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stats_tests_to_apply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.SplitSeedVolatility.__init__" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initializes the class.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>clf</code></td>
+        <td><code>model object</code></td>
+        <td><p>Binary classification model or pipeline.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>iterations</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of iterations in seed bootstrapping. By default 1000.</p></td>
+        <td><code>1000</code></td>
+      </tr>
+      <tr>
+        <td><code>scoring</code></td>
+        <td><code>string, list of strings, probatus.utils.Scorer or list of probatus.utils.Scorers</code></td>
+        <td><p>Metrics for which the score is calculated. It can be either a name or list of names metric names and
+needs to be aligned with predefined classification scorers names in sklearn
+(<a href="https://scikit-learn.org/stable/modules/model_evaluation.html">link</a>).
+Another option is using probatus.utils.Scorer to define a custom metric.</p></td>
+        <td><code>&#39;roc_auc&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>test_prc</code></td>
+        <td><code>float</code></td>
+        <td><p>Percentage of input data used as test. By default 0.25.</p></td>
+        <td><code>0.25</code></td>
+      </tr>
+      <tr>
+        <td><code>n_jobs</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of parallel executions. If -1 use all available cores. By default 1.</p></td>
+        <td><code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>stats_tests_to_apply</code></td>
+        <td><code>None, string or list of str</code></td>
+        <td><p>List of tests to apply, default is None. Available options:</p>
+<ul>
+<li><code>'ES'</code>: Epps-Singleton</li>
+<li><code>'KS'</code>: Kolmogorov-Smirnov</li>
+<li><code>'PSI'</code>: Population Stability Index</li>
+<li><code>'SW'</code>: Shapiro-Wilk</li>
+<li><code>'AD'</code>: Anderson-Darling</li>
+</ul>
+<p>Details on the available tests can be found <a href="/probatus/api/stat_tests.html#available-tests">here</a>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>verbose</code></td>
+        <td><code>int</code></td>
+        <td><p>Controls verbosity of the output:</p>
+<ul>
+<li>0 - neither prints nor warnings are shown</li>
+<li>1 - 50 - only most important warnings</li>
+<li>51 - 100 - shows other warnings and prints</li>
+<li>above 100 - presents all prints and all warnings (including SHAP warnings).</li>
+</ul></td>
+        <td><code>0</code></td>
+      </tr>
+      <tr>
+        <td><code>random_state</code></td>
+        <td><code>int</code></td>
+        <td><p>Random state set at each round of feature elimination. If it is None, the results will not be
+reproducible and in random search at each iteration a different hyperparameters might be tested. For
+reproducible results set it to integer.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/metric_volatility/volatility.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">clf</span><span class="p">,</span>
+    <span class="n">iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;roc_auc&quot;</span><span class="p">,</span>
+    <span class="n">test_prc</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">stats_tests_to_apply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initializes the class.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        clf (model object):</span>
+<span class="sd">            Binary classification model or pipeline.</span>
+
+<span class="sd">        iterations (int, optional):</span>
+<span class="sd">            Number of iterations in seed bootstrapping. By default 1000.</span>
+
+<span class="sd">        scoring (string, list of strings, probatus.utils.Scorer or list of probatus.utils.Scorers, optional):</span>
+<span class="sd">            Metrics for which the score is calculated. It can be either a name or list of names metric names and</span>
+<span class="sd">            needs to be aligned with predefined classification scorers names in sklearn</span>
+<span class="sd">            ([link](https://scikit-learn.org/stable/modules/model_evaluation.html)).</span>
+<span class="sd">            Another option is using probatus.utils.Scorer to define a custom metric.</span>
+
+<span class="sd">        test_prc (float, optional):</span>
+<span class="sd">            Percentage of input data used as test. By default 0.25.</span>
+
+<span class="sd">        n_jobs (int, optional):</span>
+<span class="sd">            Number of parallel executions. If -1 use all available cores. By default 1.</span>
+
+<span class="sd">        stats_tests_to_apply (None, string or list of str, optional):</span>
+<span class="sd">            List of tests to apply, default is None. Available options:</span>
+
+<span class="sd">            - `&#39;ES&#39;`: Epps-Singleton</span>
+<span class="sd">            - `&#39;KS&#39;`: Kolmogorov-Smirnov</span>
+<span class="sd">            - `&#39;PSI&#39;`: Population Stability Index</span>
+<span class="sd">            - `&#39;SW&#39;`: Shapiro-Wilk</span>
+<span class="sd">            - `&#39;AD&#39;`: Anderson-Darling</span>
+
+<span class="sd">            Details on the available tests can be found [here](/probatus/api/stat_tests.html#available-tests).</span>
+
+<span class="sd">        verbose (int, optional):</span>
+<span class="sd">            Controls verbosity of the output:</span>
+
+<span class="sd">            - 0 - neither prints nor warnings are shown</span>
+<span class="sd">            - 1 - 50 - only most important warnings</span>
+<span class="sd">            - 51 - 100 - shows other warnings and prints</span>
+<span class="sd">            - above 100 - presents all prints and all warnings (including SHAP warnings).</span>
+
+<span class="sd">        random_state (int, optional):</span>
+<span class="sd">            Random state set at each round of feature elimination. If it is None, the results will not be</span>
+<span class="sd">            reproducible and in random search at each iteration a different hyperparameters might be tested. For</span>
+<span class="sd">            reproducible results set it to integer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="n">clf</span><span class="o">=</span><span class="n">clf</span><span class="p">,</span>
+        <span class="n">sample_train_test_split_seed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">train_sampling_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">test_sampling_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">train_sampling_fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">test_sampling_fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">iterations</span><span class="o">=</span><span class="n">iterations</span><span class="p">,</span>
+        <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">,</span>
+        <span class="n">test_prc</span><span class="o">=</span><span class="n">test_prc</span><span class="p">,</span>
+        <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
+        <span class="n">stats_tests_to_apply</span><span class="o">=</span><span class="n">stats_tests_to_apply</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.metric_volatility.volatility.SplitSeedVolatility.compute">
+<code class="highlight language-python"><span class="n">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.SplitSeedVolatility.compute" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Reports the statistics.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>metrics</code></td>
+        <td><code>str or list of strings</code></td>
+        <td><p>Name or list of names of metrics to be plotted. If not all metrics are presented.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(pandas.Dataframe)</code></td>
+      <td><p>Report that contains the evaluation mean and std on train and test sets for each metric.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/metric_volatility/volatility.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reports the statistics.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        metrics (str or list of strings, optional):</span>
+<span class="sd">            Name or list of names of metrics to be plotted. If not all metrics are presented.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (pandas.Dataframe):</span>
+<span class="sd">            Report that contains the evaluation mean and std on train and test sets for each metric.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_check_if_fitted</span><span class="p">()</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">report</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="p">(</span>
+            <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Report is None, thus it has not been computed by fit method. Please extend the &quot;</span>
+                <span class="s2">&quot;BaseVolatilityEstimator class, overwrite fit method, and within fit run compute_report()&quot;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">metrics</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">report</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">metrics</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">metrics</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.metric_volatility.volatility.SplitSeedVolatility.fit">
+<code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.SplitSeedVolatility.fit" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Fit.</p>
+<p>Bootstraps a number of random seeds, then splits the data based on the sampled seeds and estimates performance
+    of the model based on the split data.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>X</code></td>
+        <td><code>pandas.DataFrame or numpy.ndarray</code></td>
+        <td><p>Array with samples and features.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>y</code></td>
+        <td><code>pandas.Series or numpy.ndarray</code></td>
+        <td><p>Array with targets.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>column_names</code></td>
+        <td><code>list of str</code></td>
+        <td><p>List of feature names of the provided samples. If provided it will be used to overwrite the existing
+feature names. If not provided the existing feature names are used or default feature names are
+generated.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(TrainTestVolatility)</code></td>
+      <td><p>Fitted object.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/metric_volatility/volatility.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fit.</span>
+
+<span class="sd">    Bootstraps a number of random seeds, then splits the data based on the sampled seeds and estimates performance</span>
+<span class="sd">        of the model based on the split data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        X (pandas.DataFrame or numpy.ndarray):</span>
+<span class="sd">            Array with samples and features.</span>
+
+<span class="sd">        y (pandas.Series or numpy.ndarray):</span>
+<span class="sd">            Array with targets.</span>
+
+<span class="sd">        column_names (list of str, optional):</span>
+<span class="sd">            List of feature names of the provided samples. If provided it will be used to overwrite the existing</span>
+<span class="sd">            feature names. If not provided the existing feature names are used or default feature names are</span>
+<span class="sd">            generated.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (TrainTestVolatility):</span>
+<span class="sd">            Fitted object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span> <span class="o">=</span> <span class="n">preprocess_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X_name</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="n">column_names</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">preprocess_labels</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_name</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_train_test_split_seed</span><span class="p">:</span>
+        <span class="n">random_seeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">999999</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">random_seeds</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">:</span>
+            <span class="n">random_seeds</span> <span class="o">=</span> <span class="n">random_seeds</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">random_seeds</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">random_seeds</span><span class="p">)</span>
+
+    <span class="n">results_per_iteration</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">)(</span>
+        <span class="n">delayed</span><span class="p">(</span><span class="n">get_metric</span><span class="p">)(</span>
+            <span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+            <span class="n">clf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">clf</span><span class="p">,</span>
+            <span class="n">test_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_prc</span><span class="p">,</span>
+            <span class="n">split_seed</span><span class="o">=</span><span class="n">split_seed</span><span class="p">,</span>
+            <span class="n">scorers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scorers</span><span class="p">,</span>
+            <span class="n">train_sampling_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_sampling_type</span><span class="p">,</span>
+            <span class="n">test_sampling_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_sampling_type</span><span class="p">,</span>
+            <span class="n">train_sampling_fraction</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_sampling_fraction</span><span class="p">,</span>
+            <span class="n">test_sampling_fraction</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_sampling_fraction</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">split_seed</span> <span class="ow">in</span> <span class="n">random_seeds</span>
+    <span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">iterations_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">results_per_iteration</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_create_report</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.metric_volatility.volatility.SplitSeedVolatility.fit_compute">
+<code class="highlight language-python"><span class="n">fit_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.SplitSeedVolatility.fit_compute" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Fit compute.</p>
+<p>Runs trains and evaluates a number of models on train and test sets extracted using different random seeds.
+    Reports the statistics of the selected metric.</p>
+<p>Takes as arguments the same parameters as fit() method.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(pandas.Dataframe)</code></td>
+      <td><p>Report that contains the evaluation mean and std on train and test sets for each metric.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/metric_volatility/volatility.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fit_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fit compute.</span>
+
+<span class="sd">    Runs trains and evaluates a number of models on train and test sets extracted using different random seeds.</span>
+<span class="sd">        Reports the statistics of the selected metric.</span>
+
+<span class="sd">    Takes as arguments the same parameters as fit() method.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (pandas.Dataframe):</span>
+<span class="sd">            Report that contains the evaluation mean and std on train and test sets for each metric.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.metric_volatility.volatility.SplitSeedVolatility.plot">
+<code class="highlight language-python"><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">height_per_subplot</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">width_per_subplot</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.SplitSeedVolatility.plot" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Plots distribution of the metric.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>metrics</code></td>
+        <td><code>str or list of strings</code></td>
+        <td><p>Name or list of names of metrics to be plotted. If not all metrics are presented.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>bins</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of bins into which histogram is built.</p></td>
+        <td><code>10</code></td>
+      </tr>
+      <tr>
+        <td><code>show</code></td>
+        <td><code>bool</code></td>
+        <td><p>If True, the plots are showed to the user, otherwise they are not shown. Not showing plot can be useful,
+when you want to edit the returned axis, before showing it.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>height_per_subplot</code></td>
+        <td><code>int</code></td>
+        <td><p>Height of each subplot. Default is 5.</p></td>
+        <td><code>5</code></td>
+      </tr>
+      <tr>
+        <td><code>width_per_subplot</code></td>
+        <td><code>int</code></td>
+        <td><p>Width of each subplot. Default is 5.</p></td>
+        <td><code>5</code></td>
+      </tr>
+  </tbody>
+</table>      <p>Returns
+    (list(matplotlib.axes)):
+        Axes that include the plot.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>probatus/metric_volatility/volatility.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">height_per_subplot</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">width_per_subplot</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots distribution of the metric.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        metrics (str or list of strings, optional):</span>
+<span class="sd">            Name or list of names of metrics to be plotted. If not all metrics are presented.</span>
+
+<span class="sd">        bins (int, optional):</span>
+<span class="sd">            Number of bins into which histogram is built.</span>
+
+<span class="sd">        show (bool, optional):</span>
+<span class="sd">            If True, the plots are showed to the user, otherwise they are not shown. Not showing plot can be useful,</span>
+<span class="sd">            when you want to edit the returned axis, before showing it.</span>
+
+<span class="sd">        height_per_subplot (int, optional):</span>
+<span class="sd">            Height of each subplot. Default is 5.</span>
+
+<span class="sd">        width_per_subplot (int, optional):</span>
+<span class="sd">            Width of each subplot. Default is 5.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">        (list(matplotlib.axes)):</span>
+<span class="sd">            Axes that include the plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">target_report</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">target_report</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+            <span class="n">target_report</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="mi">2</span><span class="p">,</span>
+            <span class="n">figsize</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">width_per_subplot</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="n">height_per_subplot</span> <span class="o">*</span> <span class="n">target_report</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Enable traversing the axs</span>
+        <span class="n">axs</span> <span class="o">=</span> <span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">axis_index</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">metric</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">target_report</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_samples_to_plot</span><span class="p">(</span><span class="n">metric_name</span><span class="o">=</span><span class="n">metric</span><span class="p">)</span>
+
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Train </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Distributions </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">))</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Delta </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Distributions delta </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">))</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+
+            <span class="n">axis_index</span> <span class="o">+=</span> <span class="mi">2</span>
+
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axs</span><span class="o">.</span><span class="n">flat</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> score&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">),</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Results count&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">axs</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 class="doc doc-heading" id="probatus.metric_volatility.volatility.TrainTestVolatility">
+        <code>
+TrainTestVolatility            (<span title="probatus.metric_volatility.volatility.BaseVolatilityEstimator">BaseVolatilityEstimator</span>)
+        </code>
+
+
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.TrainTestVolatility" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Estimation of volatility of metrics.</p>
+<p>The estimation is done by splitting the data into train and test multiple times
+    and training and scoring a model based on these metrics. The class allows for choosing whether at each iteration
+    the train test split should be the same or different, whether and how the train and test sets should be sampled.</p>
+
+<p><strong>Examples:</strong></p>
+    
+      <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">probatus.metric_volatility</span> <span class="kn">import</span> <span class="n">TrainTestVolatility</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span>
+<span class="n">volatility</span> <span class="o">=</span> <span class="n">TrainTestVolatility</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">10</span> <span class="p">,</span> <span class="n">test_prc</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">volatility_report</span> <span class="o">=</span> <span class="n">volatility</span><span class="o">.</span><span class="n">fit_compute</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">volatility</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</code></pre></div>
+<p><img src="../img/metric_volatility_train_test.png" width="500" /></p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.metric_volatility.volatility.TrainTestVolatility.__init__">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clf</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">,</span> <span class="n">sample_train_test_split_seed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">train_sampling_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">test_sampling_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">train_sampling_fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">test_sampling_fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">test_prc</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stats_tests_to_apply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.TrainTestVolatility.__init__" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initializes the class.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>clf</code></td>
+        <td><code>model object</code></td>
+        <td><p>Binary classification model or pipeline.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>iterations</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of iterations in seed bootstrapping. By default 1000.</p></td>
+        <td><code>1000</code></td>
+      </tr>
+      <tr>
+        <td><code>scoring</code></td>
+        <td><code>string, list of strings, probatus.utils.Scorer or list of probatus.utils.Scorers</code></td>
+        <td><p>Metrics for which the score is calculated. It can be either a name or list of names metric names and
+needs to be aligned with predefined classification scorers names in sklearn
+(<a href="https://scikit-learn.org/stable/modules/model_evaluation.html">link</a>).
+Another option is using probatus.utils.Scorer to define a custom metric.</p></td>
+        <td><code>&#39;roc_auc&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>sample_train_test_split_seed</code></td>
+        <td><code>bool</code></td>
+        <td><p>Flag indicating whether each train test split should be done
+randomly or measurement should be done for single split. Default is True, which indicates that each.
+iteration is performed on a random train test split. If the value is False, the random_seed for the
+split is set to train_test_split_seed.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>train_sampling_type</code></td>
+        <td><code>str</code></td>
+        <td><p>String indicating what type of sampling should be applied on train set:</p>
+<ul>
+<li><code>None</code> indicates that no additional sampling is done after splitting data,</li>
+<li><code>'bootstrap'</code> indicates that sampling with replacement will be performed on train data,</li>
+<li><code>'subsample'</code> indicates that sampling without repetition will be performed  on train data.</li>
+</ul></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>test_sampling_type</code></td>
+        <td><code>str</code></td>
+        <td><p>String indicating what type of sampling should be applied on test set:</p>
+<ul>
+<li><code>None</code> indicates that no additional sampling is done after splitting data,</li>
+<li><code>'bootstrap'</code> indicates that sampling with replacement will be performed on test data,</li>
+<li><code>'subsample'</code> indicates that sampling without repetition will be performed  on test data.</li>
+</ul></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>train_sampling_fraction</code></td>
+        <td><code>float</code></td>
+        <td><p>Fraction of train data sampled, if sample_train_type is not None.
+Default value is 1.</p></td>
+        <td><code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>test_sampling_fraction</code></td>
+        <td><code>float</code></td>
+        <td><p>Fraction of test data sampled, if sample_test_type is not None. Default value is 1.</p></td>
+        <td><code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>test_prc</code></td>
+        <td><code>float</code></td>
+        <td><p>Percentage of input data used as test. By default 0.25.</p></td>
+        <td><code>0.25</code></td>
+      </tr>
+      <tr>
+        <td><code>n_jobs</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of parallel executions. If -1 use all available cores. By default 1.</p></td>
+        <td><code>1</code></td>
+      </tr>
+      <tr>
+        <td><code>stats_tests_to_apply</code></td>
+        <td><code>str or list of str</code></td>
+        <td><p>List of tests to apply, default is None. Available options:</p>
+<ul>
+<li><code>'ES'</code>: Epps-Singleton</li>
+<li><code>'KS'</code>: Kolmogorov-Smirnov</li>
+<li><code>'PSI'</code>: Population Stability Index</li>
+<li><code>'SW'</code>: Shapiro-Wilk</li>
+<li><code>'AD'</code>: Anderson-Darling</li>
+</ul>
+<p>Details on the available tests can be found <a href="/probatus/api/stat_tests.html#available-tests">here</a>.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>verbose</code></td>
+        <td><code>int</code></td>
+        <td><p>Controls verbosity of the output:</p>
+<ul>
+<li>0 - neither prints nor warnings are shown</li>
+<li>1 - 50 - only most important warnings</li>
+<li>51 - 100 - shows other warnings and prints</li>
+<li>above 100 - presents all prints and all warnings (including SHAP warnings).</li>
+</ul></td>
+        <td><code>0</code></td>
+      </tr>
+      <tr>
+        <td><code>random_state</code></td>
+        <td><code>int</code></td>
+        <td><p>Random state set at each round of feature elimination. If it is None, the results will not be
+reproducible and in random search at each iteration a different hyperparameters might be tested. For
+reproducible results set it to integer.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/metric_volatility/volatility.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">clf</span><span class="p">,</span>
+    <span class="n">iterations</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;roc_auc&quot;</span><span class="p">,</span>
+    <span class="n">sample_train_test_split_seed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">train_sampling_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">test_sampling_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">train_sampling_fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">test_sampling_fraction</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">test_prc</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span>
+    <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">stats_tests_to_apply</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initializes the class.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        clf (model object):</span>
+<span class="sd">            Binary classification model or pipeline.</span>
+
+<span class="sd">        iterations (int, optional):</span>
+<span class="sd">            Number of iterations in seed bootstrapping. By default 1000.</span>
+
+<span class="sd">        scoring (string, list of strings, probatus.utils.Scorer or list of probatus.utils.Scorers, optional):</span>
+<span class="sd">            Metrics for which the score is calculated. It can be either a name or list of names metric names and</span>
+<span class="sd">            needs to be aligned with predefined classification scorers names in sklearn</span>
+<span class="sd">            ([link](https://scikit-learn.org/stable/modules/model_evaluation.html)).</span>
+<span class="sd">            Another option is using probatus.utils.Scorer to define a custom metric.</span>
+
+<span class="sd">        sample_train_test_split_seed (bool, optional):</span>
+<span class="sd">            Flag indicating whether each train test split should be done</span>
+<span class="sd">            randomly or measurement should be done for single split. Default is True, which indicates that each.</span>
+<span class="sd">            iteration is performed on a random train test split. If the value is False, the random_seed for the</span>
+<span class="sd">            split is set to train_test_split_seed.</span>
+
+<span class="sd">        train_sampling_type (str, optional):</span>
+<span class="sd">            String indicating what type of sampling should be applied on train set:</span>
+
+<span class="sd">            - `None` indicates that no additional sampling is done after splitting data,</span>
+<span class="sd">            - `&#39;bootstrap&#39;` indicates that sampling with replacement will be performed on train data,</span>
+<span class="sd">            - `&#39;subsample&#39;` indicates that sampling without repetition will be performed  on train data.</span>
+
+<span class="sd">        test_sampling_type (str, optional):</span>
+<span class="sd">            String indicating what type of sampling should be applied on test set:</span>
+
+<span class="sd">            - `None` indicates that no additional sampling is done after splitting data,</span>
+<span class="sd">            - `&#39;bootstrap&#39;` indicates that sampling with replacement will be performed on test data,</span>
+<span class="sd">            - `&#39;subsample&#39;` indicates that sampling without repetition will be performed  on test data.</span>
+
+<span class="sd">        train_sampling_fraction (float, optional):</span>
+<span class="sd">            Fraction of train data sampled, if sample_train_type is not None.</span>
+<span class="sd">            Default value is 1.</span>
+
+<span class="sd">        test_sampling_fraction (float, optional):</span>
+<span class="sd">            Fraction of test data sampled, if sample_test_type is not None. Default value is 1.</span>
+
+<span class="sd">        test_prc (float, optional):</span>
+<span class="sd">            Percentage of input data used as test. By default 0.25.</span>
+
+<span class="sd">        n_jobs (int, optional):</span>
+<span class="sd">            Number of parallel executions. If -1 use all available cores. By default 1.</span>
+
+<span class="sd">        stats_tests_to_apply (str or list of str, optional):</span>
+<span class="sd">            List of tests to apply, default is None. Available options:</span>
+
+<span class="sd">            - `&#39;ES&#39;`: Epps-Singleton</span>
+<span class="sd">            - `&#39;KS&#39;`: Kolmogorov-Smirnov</span>
+<span class="sd">            - `&#39;PSI&#39;`: Population Stability Index</span>
+<span class="sd">            - `&#39;SW&#39;`: Shapiro-Wilk</span>
+<span class="sd">            - `&#39;AD&#39;`: Anderson-Darling</span>
+
+<span class="sd">            Details on the available tests can be found [here](/probatus/api/stat_tests.html#available-tests).</span>
+
+<span class="sd">        verbose (int, optional):</span>
+<span class="sd">            Controls verbosity of the output:</span>
+
+<span class="sd">            - 0 - neither prints nor warnings are shown</span>
+<span class="sd">            - 1 - 50 - only most important warnings</span>
+<span class="sd">            - 51 - 100 - shows other warnings and prints</span>
+<span class="sd">            - above 100 - presents all prints and all warnings (including SHAP warnings).</span>
+
+<span class="sd">        random_state (int, optional):</span>
+<span class="sd">            Random state set at each round of feature elimination. If it is None, the results will not be</span>
+<span class="sd">            reproducible and in random search at each iteration a different hyperparameters might be tested. For</span>
+<span class="sd">            reproducible results set it to integer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="n">clf</span><span class="o">=</span><span class="n">clf</span><span class="p">,</span>
+        <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">,</span>
+        <span class="n">test_prc</span><span class="o">=</span><span class="n">test_prc</span><span class="p">,</span>
+        <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
+        <span class="n">stats_tests_to_apply</span><span class="o">=</span><span class="n">stats_tests_to_apply</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="n">iterations</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">train_sampling_type</span> <span class="o">=</span> <span class="n">train_sampling_type</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">test_sampling_type</span> <span class="o">=</span> <span class="n">test_sampling_type</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sample_train_test_split_seed</span> <span class="o">=</span> <span class="n">sample_train_test_split_seed</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">train_sampling_fraction</span> <span class="o">=</span> <span class="n">train_sampling_fraction</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">test_sampling_fraction</span> <span class="o">=</span> <span class="n">test_sampling_fraction</span>
+
+    <span class="n">check_sampling_input</span><span class="p">(</span><span class="n">train_sampling_type</span><span class="p">,</span> <span class="n">train_sampling_fraction</span><span class="p">,</span> <span class="s2">&quot;train&quot;</span><span class="p">)</span>
+    <span class="n">check_sampling_input</span><span class="p">(</span><span class="n">test_sampling_type</span><span class="p">,</span> <span class="n">test_sampling_fraction</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.metric_volatility.volatility.TrainTestVolatility.compute">
+<code class="highlight language-python"><span class="n">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.TrainTestVolatility.compute" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Reports the statistics.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>metrics</code></td>
+        <td><code>str or list of strings</code></td>
+        <td><p>Name or list of names of metrics to be plotted. If not all metrics are presented.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(pandas.Dataframe)</code></td>
+      <td><p>Report that contains the evaluation mean and std on train and test sets for each metric.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/metric_volatility/volatility.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reports the statistics.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        metrics (str or list of strings, optional):</span>
+<span class="sd">            Name or list of names of metrics to be plotted. If not all metrics are presented.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (pandas.Dataframe):</span>
+<span class="sd">            Report that contains the evaluation mean and std on train and test sets for each metric.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_check_if_fitted</span><span class="p">()</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">report</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="p">(</span>
+            <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Report is None, thus it has not been computed by fit method. Please extend the &quot;</span>
+                <span class="s2">&quot;BaseVolatilityEstimator class, overwrite fit method, and within fit run compute_report()&quot;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">metrics</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">report</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">metrics</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">metrics</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.metric_volatility.volatility.TrainTestVolatility.fit">
+<code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.TrainTestVolatility.fit" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Fit.</p>
+<p>Bootstraps a number of random seeds, then splits the data based on the sampled seeds and estimates performance
+    of the model based on the split data.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>X</code></td>
+        <td><code>pandas.DataFrame or numpy.ndarray</code></td>
+        <td><p>Array with samples and features.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>y</code></td>
+        <td><code>pandas.Series or numpy.ndarray</code></td>
+        <td><p>Array with targets.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>column_names</code></td>
+        <td><code>list of str</code></td>
+        <td><p>List of feature names of the provided samples. If provided it will be used to overwrite the existing
+feature names. If not provided the existing feature names are used or default feature names are
+generated.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(TrainTestVolatility)</code></td>
+      <td><p>Fitted object.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/metric_volatility/volatility.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fit.</span>
+
+<span class="sd">    Bootstraps a number of random seeds, then splits the data based on the sampled seeds and estimates performance</span>
+<span class="sd">        of the model based on the split data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        X (pandas.DataFrame or numpy.ndarray):</span>
+<span class="sd">            Array with samples and features.</span>
+
+<span class="sd">        y (pandas.Series or numpy.ndarray):</span>
+<span class="sd">            Array with targets.</span>
+
+<span class="sd">        column_names (list of str, optional):</span>
+<span class="sd">            List of feature names of the provided samples. If provided it will be used to overwrite the existing</span>
+<span class="sd">            feature names. If not provided the existing feature names are used or default feature names are</span>
+<span class="sd">            generated.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (TrainTestVolatility):</span>
+<span class="sd">            Fitted object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_names</span> <span class="o">=</span> <span class="n">preprocess_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X_name</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="n">column_names</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">preprocess_labels</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_name</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_train_test_split_seed</span><span class="p">:</span>
+        <span class="n">random_seeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">999999</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">random_seeds</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iterations</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">:</span>
+            <span class="n">random_seeds</span> <span class="o">=</span> <span class="n">random_seeds</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">random_seeds</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">random_seeds</span><span class="p">)</span>
+
+    <span class="n">results_per_iteration</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">)(</span>
+        <span class="n">delayed</span><span class="p">(</span><span class="n">get_metric</span><span class="p">)(</span>
+            <span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+            <span class="n">clf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">clf</span><span class="p">,</span>
+            <span class="n">test_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_prc</span><span class="p">,</span>
+            <span class="n">split_seed</span><span class="o">=</span><span class="n">split_seed</span><span class="p">,</span>
+            <span class="n">scorers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scorers</span><span class="p">,</span>
+            <span class="n">train_sampling_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_sampling_type</span><span class="p">,</span>
+            <span class="n">test_sampling_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_sampling_type</span><span class="p">,</span>
+            <span class="n">train_sampling_fraction</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_sampling_fraction</span><span class="p">,</span>
+            <span class="n">test_sampling_fraction</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_sampling_fraction</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">split_seed</span> <span class="ow">in</span> <span class="n">random_seeds</span>
+    <span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">iterations_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">results_per_iteration</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_create_report</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.metric_volatility.volatility.TrainTestVolatility.fit_compute">
+<code class="highlight language-python"><span class="n">fit_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.TrainTestVolatility.fit_compute" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Fit compute.</p>
+<p>Runs trains and evaluates a number of models on train and test sets extracted using different random seeds.
+    Reports the statistics of the selected metric.</p>
+<p>Takes as arguments the same parameters as fit() method.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>(pandas.Dataframe)</code></td>
+      <td><p>Report that contains the evaluation mean and std on train and test sets for each metric.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/metric_volatility/volatility.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fit_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fit compute.</span>
+
+<span class="sd">    Runs trains and evaluates a number of models on train and test sets extracted using different random seeds.</span>
+<span class="sd">        Reports the statistics of the selected metric.</span>
+
+<span class="sd">    Takes as arguments the same parameters as fit() method.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (pandas.Dataframe):</span>
+<span class="sd">            Report that contains the evaluation mean and std on train and test sets for each metric.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.metric_volatility.volatility.TrainTestVolatility.plot">
+<code class="highlight language-python"><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">height_per_subplot</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">width_per_subplot</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-inherited"><code>inherited</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.metric_volatility.volatility.TrainTestVolatility.plot" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Plots distribution of the metric.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>metrics</code></td>
+        <td><code>str or list of strings</code></td>
+        <td><p>Name or list of names of metrics to be plotted. If not all metrics are presented.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>bins</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of bins into which histogram is built.</p></td>
+        <td><code>10</code></td>
+      </tr>
+      <tr>
+        <td><code>show</code></td>
+        <td><code>bool</code></td>
+        <td><p>If True, the plots are showed to the user, otherwise they are not shown. Not showing plot can be useful,
+when you want to edit the returned axis, before showing it.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>height_per_subplot</code></td>
+        <td><code>int</code></td>
+        <td><p>Height of each subplot. Default is 5.</p></td>
+        <td><code>5</code></td>
+      </tr>
+      <tr>
+        <td><code>width_per_subplot</code></td>
+        <td><code>int</code></td>
+        <td><p>Width of each subplot. Default is 5.</p></td>
+        <td><code>5</code></td>
+      </tr>
+  </tbody>
+</table>      <p>Returns
+    (list(matplotlib.axes)):
+        Axes that include the plot.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>probatus/metric_volatility/volatility.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">height_per_subplot</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">width_per_subplot</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots distribution of the metric.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        metrics (str or list of strings, optional):</span>
+<span class="sd">            Name or list of names of metrics to be plotted. If not all metrics are presented.</span>
+
+<span class="sd">        bins (int, optional):</span>
+<span class="sd">            Number of bins into which histogram is built.</span>
+
+<span class="sd">        show (bool, optional):</span>
+<span class="sd">            If True, the plots are showed to the user, otherwise they are not shown. Not showing plot can be useful,</span>
+<span class="sd">            when you want to edit the returned axis, before showing it.</span>
+
+<span class="sd">        height_per_subplot (int, optional):</span>
+<span class="sd">            Height of each subplot. Default is 5.</span>
+
+<span class="sd">        width_per_subplot (int, optional):</span>
+<span class="sd">            Width of each subplot. Default is 5.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">        (list(matplotlib.axes)):</span>
+<span class="sd">            Axes that include the plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">target_report</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">target_report</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+            <span class="n">target_report</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="mi">2</span><span class="p">,</span>
+            <span class="n">figsize</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">width_per_subplot</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="n">height_per_subplot</span> <span class="o">*</span> <span class="n">target_report</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Enable traversing the axs</span>
+        <span class="n">axs</span> <span class="o">=</span> <span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">axis_index</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">metric</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">target_report</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_samples_to_plot</span><span class="p">(</span><span class="n">metric_name</span><span class="o">=</span><span class="n">metric</span><span class="p">)</span>
+
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Train </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Distributions </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">))</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Delta </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Distributions delta </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">))</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">axis_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+
+            <span class="n">axis_index</span> <span class="o">+=</span> <span class="mi">2</span>
+
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axs</span><span class="o">.</span><span class="n">flat</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> score&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">),</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Results count&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">axs</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="model_interpret.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: probatus.interpret" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              probatus.interpret
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="imputation_selector.html" class="md-footer__link md-footer__link--next" aria-label="Next: probatus.missing_values" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              probatus.missing_values
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2020 ING Bank N.V.
+          </div>
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.e99e714c.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c7d1b464.min.js"></script>
+      
+    
+  </body>
+</html>

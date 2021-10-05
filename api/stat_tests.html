@@ -1,0 +1,2649 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Validation of binary classifiers and data used to develop them">
+      
+      
+      
+        <meta name="author" content="ING Bank N. V.">
+      
+      
+        <link rel="canonical" href="https://ing-bank.github.io/probatus/api/stat_tests.html">
+      
+      <link rel="icon" href="../img/Probatus_P_white.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.3.1">
+    
+    
+      
+        <title>probatus.stat_tests - Probatus Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.1c75ef36.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#ff6e42">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,400i,700%7CUbuntu+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Ubuntu";--md-code-font-family:"Ubuntu Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#statistical-tests" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Probatus Docs" class="md-header__button md-logo" aria-label="Probatus Docs" data-md-component="logo">
+      
+  <img src="../img/Probatus_P_white.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Probatus Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              probatus.stat_tests
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/ing-bank/probatus/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../tutorials/nb_shap_feature_elimination.html" class="md-tabs__link">
+        Tutorials
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../howto/reproducibility.html" class="md-tabs__link">
+        HowTo
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="feature_elimination.html" class="md-tabs__link md-tabs__link--active">
+        API
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../discussion/vision.html" class="md-tabs__link">
+        Discussion
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Probatus Docs" class="md-nav__button md-logo" aria-label="Probatus Docs" data-md-component="logo">
+      
+  <img src="../img/Probatus_P_white.png" alt="logo">
+
+    </a>
+    Probatus Docs
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ing-bank/probatus/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_shap_feature_elimination.html" class="md-nav__link">
+        ShapRFECV - Recursive Feature Elimination using SHAP importance
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_shap_model_interpreter.html" class="md-nav__link">
+        Tree-based & Linear Model Interpretation with SHAP
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_imputation_comparison.html" class="md-nav__link">
+        Imputation Strategy Comparison
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_metric_volatility.html" class="md-nav__link">
+        Model Metrics Volatility
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_sample_similarity.html" class="md-nav__link">
+        Multivariate Sample Similarity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_distribution_statistics.html" class="md-nav__link">
+        Univariate Sample Similarity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/nb_custom_scoring.html" class="md-nav__link">
+        Custom Scoring Metrics
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          HowTo
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="HowTo" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          HowTo
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/reproducibility.html" class="md-nav__link">
+        Reproduce the results
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/grouped_data.html" class="md-nav__link">
+        Work with grouped data
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          API
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature_elimination.html" class="md-nav__link">
+        probatus.feature_elimination
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="model_interpret.html" class="md-nav__link">
+        probatus.interpret
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="metric_volatility.html" class="md-nav__link">
+        probatus.metric_volatility
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="imputation_selector.html" class="md-nav__link">
+        probatus.missing_values
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sample_similarity.html" class="md-nav__link">
+        probatus.sample_similarity
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          probatus.stat_tests
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="stat_tests.html" class="md-nav__link md-nav__link--active">
+        probatus.stat_tests
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.stat_tests.distribution_statistics.AutoDist" class="md-nav__link">
+    AutoDist
+  </a>
+  
+    <nav class="md-nav" aria-label="AutoDist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.stat_tests.distribution_statistics.AutoDist.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.stat_tests.distribution_statistics.AutoDist.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.stat_tests.distribution_statistics.DistributionStatistics" class="md-nav__link">
+    DistributionStatistics
+  </a>
+  
+    <nav class="md-nav" aria-label="DistributionStatistics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.stat_tests.distribution_statistics.DistributionStatistics.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.stat_tests.distribution_statistics.DistributionStatistics.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-tests" class="md-nav__link">
+    Available tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.stat_tests.ad.ad" class="md-nav__link">
+    ad()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.stat_tests.es.es" class="md-nav__link">
+    es()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.stat_tests.ks.ks" class="md-nav__link">
+    ks()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.stat_tests.psi.psi" class="md-nav__link">
+    psi()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.stat_tests.sw.sw" class="md-nav__link">
+    sw()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="utils.html" class="md-nav__link">
+        probatus.utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Discussion
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Discussion" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Discussion
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../discussion/vision.html" class="md-nav__link">
+        Vision
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../discussion/nb_rfecv_vs_shaprfecv.html" class="md-nav__link">
+        ShapRFECV vs sklearn RFECV
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../discussion/contributing.html" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.stat_tests.distribution_statistics.AutoDist" class="md-nav__link">
+    AutoDist
+  </a>
+  
+    <nav class="md-nav" aria-label="AutoDist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.stat_tests.distribution_statistics.AutoDist.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.stat_tests.distribution_statistics.AutoDist.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.stat_tests.distribution_statistics.DistributionStatistics" class="md-nav__link">
+    DistributionStatistics
+  </a>
+  
+    <nav class="md-nav" aria-label="DistributionStatistics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probatus.stat_tests.distribution_statistics.DistributionStatistics.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probatus.stat_tests.distribution_statistics.DistributionStatistics.compute" class="md-nav__link">
+    compute()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-tests" class="md-nav__link">
+    Available tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.stat_tests.ad.ad" class="md-nav__link">
+    ad()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.stat_tests.es.es" class="md-nav__link">
+    es()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.stat_tests.ks.ks" class="md-nav__link">
+    ks()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.stat_tests.psi.psi" class="md-nav__link">
+    psi()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probatus.stat_tests.sw.sw" class="md-nav__link">
+    sw()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ing-bank/probatus/edit/master/docs/api/stat_tests.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="statistical-tests">Statistical Tests<a class="headerlink" href="#statistical-tests" title="Permanent link">&para;</a></h1>
+<p>This module allows us to apply different statistical tests.</p>
+
+
+  <div class="doc doc-object doc-module">
+
+
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 class="doc doc-heading" id="probatus.stat_tests.distribution_statistics.AutoDist">
+        <code>
+AutoDist        </code>
+
+
+
+<a class="headerlink" href="#probatus.stat_tests.distribution_statistics.AutoDist" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Class to automatically apply all implemented statistical distribution tests and binning strategies
+to (a selection of) features in two dataframes.</p>
+<p>Details on the available tests can be found <a href="/probatus/api/stat_tests.html#available-tests">here</a>.</p>
+
+<p><strong>Examples:</strong></p>
+    
+      <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">probatus.stat_tests</span> <span class="kn">import</span> <span class="n">AutoDist</span>
+
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;feat_0&#39;</span><span class="p">,</span> <span class="s1">&#39;feat_1&#39;</span><span class="p">])</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;feat_0&#39;</span><span class="p">,</span> <span class="s1">&#39;feat_1&#39;</span><span class="p">])</span>
+<span class="n">myAutoDist</span> <span class="o">=</span> <span class="n">AutoDist</span><span class="p">(</span><span class="n">statistical_tests</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;KS&quot;</span><span class="p">,</span> <span class="s2">&quot;PSI&quot;</span><span class="p">],</span> <span class="n">binning_strategies</span><span class="o">=</span><span class="s1">&#39;simplebucketer&#39;</span><span class="p">,</span> <span class="n">bin_count</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">myAutoDist</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="n">df1</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="../img/autodist.png" width="700" /></p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.stat_tests.distribution_statistics.AutoDist.__init__">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statistical_tests</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">binning_strategies</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">bin_count</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.stat_tests.distribution_statistics.AutoDist.__init__" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initializes the class.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>statistical_tests</code></td>
+        <td><code>str or list of str</code></td>
+        <td><p>Test or list of tests to apply.
+Set to <code>'all'</code> to apply all the available test. Available tests:</p>
+<ul>
+<li><code>'ES'</code>: Epps-Singleton</li>
+<li><code>'KS'</code>: Kolmogorov-Smirnov</li>
+<li><code>'PSI'</code>: Population Stability Index</li>
+<li><code>'SW'</code>: Shapiro-Wilk</li>
+<li><code>'AD'</code>: Anderson-Darling</li>
+</ul>
+<p>Details on the available tests can be found <a href="/probatus/api/stat_tests.html#available-tests">here</a>.</p></td>
+        <td><code>&#39;all&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>binning_strategies</code></td>
+        <td><code>str</code></td>
+        <td><p>Binning strategies to apply for each test, either list of tests names,
+'all' or 'default'. Binning strategies that can be chosen:</p>
+<ul>
+<li><code>'SimpleBucketer'</code>: equally spaced bins,</li>
+<li><code>'AgglomerativeBucketer'</code>: binning by applying the Scikit-learn implementation of Agglomerative
+    Clustering,</li>
+<li><code>'QuantileBucketer'</code>: bins with equal number of elements,</li>
+<li><code>None</code>: no binning is applied. Note that not all statistical tests will be performed since some of
+    them require binning strategies.</li>
+<li><code>'default'</code>: applies a default binning for a given stats_test. For all tests appart from PSI, no
+    binning (None) is used. For PSI by default quantilebucketer is used.</li>
+<li><code>'all'</code>: each binning strategy is used for each statistical test</li>
+</ul></td>
+        <td><code>&#39;default&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>bin_count</code></td>
+        <td><code>integer, None or list of integers</code></td>
+        <td><p>bin_count value(s) to be used, note that None can only be used when no bucketing strategy is applied.</p></td>
+        <td><code>10</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/stat_tests/distribution_statistics.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statistical_tests</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="n">binning_strategies</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">bin_count</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initializes the class.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        statistical_tests (str or list of str, optional): Test or list of tests to apply.</span>
+<span class="sd">            Set to `&#39;all&#39;` to apply all the available test. Available tests:</span>
+
+<span class="sd">            - `&#39;ES&#39;`: Epps-Singleton</span>
+<span class="sd">            - `&#39;KS&#39;`: Kolmogorov-Smirnov</span>
+<span class="sd">            - `&#39;PSI&#39;`: Population Stability Index</span>
+<span class="sd">            - `&#39;SW&#39;`: Shapiro-Wilk</span>
+<span class="sd">            - `&#39;AD&#39;`: Anderson-Darling</span>
+
+<span class="sd">            Details on the available tests can be found [here](/probatus/api/stat_tests.html#available-tests).</span>
+
+<span class="sd">        binning_strategies (str, optional): Binning strategies to apply for each test, either list of tests names,</span>
+<span class="sd">            &#39;all&#39; or &#39;default&#39;. Binning strategies that can be chosen:</span>
+
+<span class="sd">            - `&#39;SimpleBucketer&#39;`: equally spaced bins,</span>
+<span class="sd">            - `&#39;AgglomerativeBucketer&#39;`: binning by applying the Scikit-learn implementation of Agglomerative</span>
+<span class="sd">                Clustering,</span>
+<span class="sd">            - `&#39;QuantileBucketer&#39;`: bins with equal number of elements,</span>
+<span class="sd">            - `None`: no binning is applied. Note that not all statistical tests will be performed since some of</span>
+<span class="sd">                them require binning strategies.</span>
+<span class="sd">            - `&#39;default&#39;`: applies a default binning for a given stats_test. For all tests appart from PSI, no</span>
+<span class="sd">                binning (None) is used. For PSI by default quantilebucketer is used.</span>
+<span class="sd">            - `&#39;all&#39;`: each binning strategy is used for each statistical test</span>
+
+<span class="sd">        bin_count (integer, None or list of integers, optional):</span>
+<span class="sd">            bin_count value(s) to be used, note that None can only be used when no bucketing strategy is applied.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1"># Initialize statistical tests to be performed</span>
+    <span class="k">if</span> <span class="n">statistical_tests</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statistical_tests</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">DistributionStatistics</span><span class="o">.</span><span class="n">statistical_test_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">statistical_tests</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statistical_tests</span> <span class="o">=</span> <span class="p">[</span><span class="n">statistical_tests</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statistical_tests</span> <span class="o">=</span> <span class="n">statistical_tests</span>
+
+    <span class="c1"># Initialize binning strategies to be used</span>
+    <span class="k">if</span> <span class="n">binning_strategies</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">DistributionStatistics</span><span class="o">.</span><span class="n">binning_strategy_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">binning_strategies</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategies</span> <span class="o">=</span> <span class="p">[</span><span class="n">binning_strategies</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">binning_strategies</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategies</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategies</span> <span class="o">=</span> <span class="n">binning_strategies</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bin_count</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bin_count</span> <span class="o">=</span> <span class="p">[</span><span class="n">bin_count</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bin_count</span> <span class="o">=</span> <span class="n">bin_count</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.stat_tests.distribution_statistics.AutoDist.compute">
+<code class="highlight language-python"><span class="n">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_failed_tests</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">suppress_warnings</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.stat_tests.distribution_statistics.AutoDist.compute" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Fit the AutoDist object to data; i.e. apply the statistical tests and binning strategies.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>df1</code></td>
+        <td><code>pandas.DataFrame</code></td>
+        <td><p>DataFrame 1 for distribution comparison with DataFrame 2.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>df2</code></td>
+        <td><code>pandas.DataFrame</code></td>
+        <td><p>DataFrame 2 for distribution comparison with DataFrame 1.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>column_names</code></td>
+        <td><code>list of str</code></td>
+        <td><p>list of columns in df1 and df2 that should be compared. If None, all column names will be compared.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>return_failed_tests</code></td>
+        <td><code>bool</code></td>
+        <td><p>remove tests in result that did not succeed.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>suppress_warnings</code></td>
+        <td><code>bool</code></td>
+        <td><p>whether to suppress warnings during the fit process.</p></td>
+        <td><code>False</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>pandas.DataFrame</code></td>
+      <td><p>DataFrame with results of the performed statistical tests and binning strategies.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/stat_tests/distribution_statistics.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">compute</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">df1</span><span class="p">,</span>
+    <span class="n">df2</span><span class="p">,</span>
+    <span class="n">column_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_failed_tests</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">suppress_warnings</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fit the AutoDist object to data; i.e. apply the statistical tests and binning strategies.</span>
+
+<span class="sd">    Args:</span>
+
+<span class="sd">        df1 (pandas.DataFrame):</span>
+<span class="sd">            DataFrame 1 for distribution comparison with DataFrame 2.</span>
+
+<span class="sd">        df2 (pandas.DataFrame):</span>
+<span class="sd">            DataFrame 2 for distribution comparison with DataFrame 1.</span>
+
+<span class="sd">        column_names (list of str, optional):</span>
+<span class="sd">            list of columns in df1 and df2 that should be compared. If None, all column names will be compared.</span>
+
+<span class="sd">        return_failed_tests (bool, optional):</span>
+<span class="sd">            remove tests in result that did not succeed.</span>
+
+<span class="sd">        suppress_warnings (bool, optional):</span>
+<span class="sd">            whether to suppress warnings during the fit process.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pandas.DataFrame: DataFrame with results of the performed statistical tests and binning strategies.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">column_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">column_names</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">column_names</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">columns</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;column_names was set to None but columns in provided dataframes are different&quot;</span><span class="p">)</span>
+    <span class="c1"># Check if all columns in column_names are in df1 and df2</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">column_names</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">df1</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">column_names</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">columns</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Not all columns in `column_names` are in the provided dataframes&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Calculate statistics and p-values for all combinations</span>
+    <span class="n">result_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">column_names</span><span class="p">:</span>
+        <span class="c1"># Issue a warning if missing values are present in one of the two columns. These observations are removed</span>
+        <span class="c1"># in the calculations.</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">df1</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">df2</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()):</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing values in column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> have been removed&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Remove the missing values.</span>
+        <span class="n">feature_df1</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+        <span class="n">feature_df2</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">stat_test</span><span class="p">,</span> <span class="n">bin_strat</span><span class="p">,</span> <span class="n">bins</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span>
+        <span class="nb">list</span><span class="p">(</span>
+            <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">statistical_tests</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategies</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bin_count</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategies</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]:</span>
+                <span class="n">bin_strat</span> <span class="o">=</span> <span class="n">DistributionStatistics</span><span class="o">.</span><span class="n">statistical_test_dict</span><span class="p">[</span><span class="n">stat_test</span><span class="p">][</span><span class="s2">&quot;default_binning&quot;</span><span class="p">]</span>
+
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">DistributionStatistics</span><span class="p">(</span><span class="n">statistical_test</span><span class="o">=</span><span class="n">stat_test</span><span class="p">,</span> <span class="n">binning_strategy</span><span class="o">=</span><span class="n">bin_strat</span><span class="p">,</span> <span class="n">bin_count</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">suppress_warnings</span><span class="p">:</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">feature_df1</span><span class="p">,</span> <span class="n">feature_df2</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">suppress_warnings</span><span class="p">:</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+                <span class="n">statistic</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">statistic</span>
+                <span class="n">p_value</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">p_value</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">statistic</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="s2">&quot;an error occurred&quot;</span><span class="p">,</span> <span class="kc">None</span>
+                <span class="k">pass</span>
+
+            <span class="c1"># Append result to results list</span>
+            <span class="n">result_</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;column&quot;</span><span class="p">:</span> <span class="n">col</span><span class="p">,</span>
+                <span class="s2">&quot;statistical_test&quot;</span><span class="p">:</span> <span class="n">stat_test</span><span class="p">,</span>
+                <span class="s2">&quot;binning_strategy&quot;</span><span class="p">:</span> <span class="n">bin_strat</span><span class="p">,</span>
+                <span class="s2">&quot;bin_count&quot;</span><span class="p">:</span> <span class="n">bins</span><span class="p">,</span>
+                <span class="s2">&quot;statistic&quot;</span><span class="p">:</span> <span class="n">statistic</span><span class="p">,</span>
+                <span class="s2">&quot;p_value&quot;</span><span class="p">:</span> <span class="n">p_value</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="n">result_all</span> <span class="o">=</span> <span class="n">result_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result_</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">return_failed_tests</span><span class="p">:</span>
+        <span class="n">result_all</span> <span class="o">=</span> <span class="n">result_all</span><span class="p">[</span><span class="n">result_all</span><span class="p">[</span><span class="s2">&quot;statistic&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;an error occurred&quot;</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_result</span> <span class="o">=</span> <span class="n">result_all</span><span class="p">[</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;column&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;statistical_test&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;binning_strategy&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;bin_count&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;statistic&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;p_value&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="p">[</span><span class="s2">&quot;bin_count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="p">[</span><span class="s2">&quot;bin_count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="p">[</span><span class="s2">&quot;binning_strategy&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">(),</span> <span class="s2">&quot;bin_count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="p">[</span><span class="s2">&quot;binning_strategy&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">(),</span> <span class="s2">&quot;binning_strategy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;no_bucketing&quot;</span>
+
+    <span class="c1"># Remove duplicates that appear if multiple bin numbers are passed, and binning strategy None</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span>
+        <span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;column&quot;</span><span class="p">,</span> <span class="s2">&quot;statistical_test&quot;</span><span class="p">,</span> <span class="s2">&quot;binning_strategy&quot;</span><span class="p">,</span> <span class="s2">&quot;bin_count&quot;</span><span class="p">],</span>
+        <span class="n">keep</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># create pivot table as final output</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result</span><span class="p">,</span>
+        <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;statistic&quot;</span><span class="p">,</span> <span class="s2">&quot;p_value&quot;</span><span class="p">],</span>
+        <span class="n">index</span><span class="o">=</span><span class="s2">&quot;column&quot;</span><span class="p">,</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;statistical_test&quot;</span><span class="p">,</span> <span class="s2">&quot;binning_strategy&quot;</span><span class="p">,</span> <span class="s2">&quot;bin_count&quot;</span><span class="p">],</span>
+        <span class="n">aggfunc</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># flatten multi-index</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">line</span><span class="p">])</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 class="doc doc-heading" id="probatus.stat_tests.distribution_statistics.DistributionStatistics">
+        <code>
+DistributionStatistics        </code>
+
+
+
+<a class="headerlink" href="#probatus.stat_tests.distribution_statistics.DistributionStatistics" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Wrapper that applies a statistical test to compare two distributions.</p>
+<p>Details on the available tests can be found <a href="/probatus/api/stat_tests.html#available-tests">here</a>.</p>
+<p>For some tests, default data binning strategies are also provided.</p>
+
+<p><strong>Examples:</strong></p>
+    
+      <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">probatus.stat_tests</span> <span class="kn">import</span> <span class="n">DistributionStatistics</span>
+
+<span class="n">d1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span> <span class="mi">10</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">d2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">),</span> <span class="mi">10</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">myTest</span> <span class="o">=</span> <span class="n">DistributionStatistics</span><span class="p">(</span><span class="s1">&#39;KS&#39;</span><span class="p">,</span> <span class="n">bin_count</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">test_statistic</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">myTest</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.stat_tests.distribution_statistics.DistributionStatistics.__init__">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statistical_test</span><span class="p">,</span> <span class="n">binning_strategy</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">bin_count</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a class="headerlink" href="#probatus.stat_tests.distribution_statistics.DistributionStatistics.__init__" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Initializes the class.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>statistical_test</code></td>
+        <td><code>str</code></td>
+        <td><p>Statistical test to apply. Available tests:</p>
+<ul>
+<li><code>'ES'</code>: Epps-Singleton</li>
+<li><code>'KS'</code>: Kolmogorov-Smirnov</li>
+<li><code>'PSI'</code>: Population Stability Index</li>
+<li><code>'SW'</code>: Shapiro-Wilk</li>
+<li><code>'AD'</code>: Anderson-Darling</li>
+</ul>
+<p>Details on the available tests can be found <a href="/probatus/api/stat_tests.html#available-tests">here</a></p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>binning_strategy</code></td>
+        <td><code>string</code></td>
+        <td><p>Binning strategy to apply, binning strategies implemented:</p>
+<ul>
+<li><code>'simplebucketer'</code>: equally spaced bins,</li>
+<li><code>'agglomerativebucketer'</code>: binning by applying the Scikit-learn implementation of Agglomerative
+    Clustering,</li>
+<li><code>'quantilebucketer'</code>: bins with equal number of elements,</li>
+<li><code>'default'</code>: applies a default binning for a given stats_test. For all tests appart from PSI, no
+    binning (None) is used. For PSI by default quantilebucketer is used,</li>
+<li><code>None</code>: no binning is applied. The test is computed based on original distribution.</li>
+</ul></td>
+        <td><code>&#39;default&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>bin_count</code></td>
+        <td><code>int</code></td>
+        <td><p>In case binning_strategy is not None, specify the number of bins to be used by
+the binning strategy. By default 10 bins are used.</p></td>
+        <td><code>10</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/stat_tests/distribution_statistics.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statistical_test</span><span class="p">,</span> <span class="n">binning_strategy</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">bin_count</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initializes the class.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        statistical_test (str): Statistical test to apply. Available tests:</span>
+
+<span class="sd">            - `&#39;ES&#39;`: Epps-Singleton</span>
+<span class="sd">            - `&#39;KS&#39;`: Kolmogorov-Smirnov</span>
+<span class="sd">            - `&#39;PSI&#39;`: Population Stability Index</span>
+<span class="sd">            - `&#39;SW&#39;`: Shapiro-Wilk</span>
+<span class="sd">            - `&#39;AD&#39;`: Anderson-Darling</span>
+
+<span class="sd">            Details on the available tests can be found [here](/probatus/api/stat_tests.html#available-tests)</span>
+
+<span class="sd">        binning_strategy (string, optional):</span>
+<span class="sd">            Binning strategy to apply, binning strategies implemented:</span>
+
+<span class="sd">            - `&#39;simplebucketer&#39;`: equally spaced bins,</span>
+<span class="sd">            - `&#39;agglomerativebucketer&#39;`: binning by applying the Scikit-learn implementation of Agglomerative</span>
+<span class="sd">                Clustering,</span>
+<span class="sd">            - `&#39;quantilebucketer&#39;`: bins with equal number of elements,</span>
+<span class="sd">            - `&#39;default&#39;`: applies a default binning for a given stats_test. For all tests appart from PSI, no</span>
+<span class="sd">                binning (None) is used. For PSI by default quantilebucketer is used,</span>
+<span class="sd">            - `None`: no binning is applied. The test is computed based on original distribution.</span>
+
+<span class="sd">        bin_count (int, optional): In case binning_strategy is not None, specify the number of bins to be used by</span>
+<span class="sd">            the binning strategy. By default 10 bins are used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">statistical_test</span> <span class="o">=</span> <span class="n">statistical_test</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategy</span> <span class="o">=</span> <span class="n">binning_strategy</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">bin_count</span> <span class="o">=</span> <span class="n">bin_count</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1"># Initialize the statistical test</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">statistical_test</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">statistical_test_dict</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">&quot;The statistical test should be one of </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">statistical_test_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statistical_test_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statistical_test_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">statistical_test</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_statistical_test_function</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statistical_test_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">statistical_test</span><span class="p">][</span><span class="s2">&quot;func&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Initialize the binning strategy</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategy</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategy</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategy</span> <span class="o">==</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statistical_test_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">statistical_test</span><span class="p">][</span><span class="s2">&quot;default_binning&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategy_dict</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">&quot;The binning strategy should be one of </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binning_strategy_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">binner</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategy_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">binning_strategy</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">binner</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">binner</span> <span class="o">=</span> <span class="n">binner</span><span class="p">(</span><span class="n">bin_count</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bin_count</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 class="doc doc-heading" id="probatus.stat_tests.distribution_statistics.DistributionStatistics.compute">
+<code class="highlight language-python"><span class="n">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.stat_tests.distribution_statistics.DistributionStatistics.compute" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Apply the statistical test and compute statistic value and p-value.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>d1</code></td>
+        <td><code>np.array or pandas.DataFrame</code></td>
+        <td><p>distribution 1.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>d2</code></td>
+        <td><code>np.array or pandas.DataFrame</code></td>
+        <td><p>distribution 2.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>verbose</code></td>
+        <td><code>bool</code></td>
+        <td><p>Flag indicating whether prints should be shown.</p></td>
+        <td><code>False</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>float</code></td>
+      <td><p>Statistic value
+float: p_value. For PSI test, only the statistic value is returned</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/stat_tests/distribution_statistics.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply the statistical test and compute statistic value and p-value.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        d1 (np.array or pandas.DataFrame):</span>
+<span class="sd">            distribution 1.</span>
+
+<span class="sd">        d2 (np.array or pandas.DataFrame):</span>
+<span class="sd">            distribution 2.</span>
+
+<span class="sd">        verbose (bool, optional):</span>
+<span class="sd">            Flag indicating whether prints should be shown.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Statistic value</span>
+<span class="sd">        float: p_value. For PSI test, only the statistic value is returned</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">check_numeric_dtypes</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+    <span class="n">check_numeric_dtypes</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
+
+    <span class="c1"># Bin the data</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">binning_strategy</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binner</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+        <span class="n">d1_preprocessed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binner</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+        <span class="n">d2_preprocessed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binner</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">d1_preprocessed</span><span class="p">,</span> <span class="n">d2_preprocessed</span> <span class="o">=</span> <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span>
+
+    <span class="c1"># Perform the statistical test</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_statistical_test_function</span><span class="p">(</span><span class="n">d1_preprocessed</span><span class="p">,</span> <span class="n">d2_preprocessed</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># Check form of results and return</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">==</span> <span class="nb">tuple</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statistic</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_value</span> <span class="o">=</span> <span class="n">res</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statistic</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_value</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">statistic</span> <span class="o">=</span> <span class="n">res</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">statistic</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+<h2 id="available-tests">Available tests<a class="headerlink" href="#available-tests" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#probatus.stat_tests.ad.ad">Anderson-Darling (ad)</a></li>
+<li><a href="#probatus.stat_tests.es.es">Epps-Singleton (es)</a></li>
+<li><a href="#probatus.stat_tests.ks.ks">Kolmogorov-Smirnov (ks)</a></li>
+<li><a href="#probatus.stat_tests.psi.psi">Population Stability Index (psi)</a></li>
+<li><a href="#probatus.stat_tests.sw.sw">Shapiro-Wilk (sw)</a></li>
+</ul>
+
+
+  <div class="doc doc-object doc-module">
+
+
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 class="doc doc-heading" id="probatus.stat_tests.ad.ad">
+<code class="highlight language-python"><span class="n">ad</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.stat_tests.ad.ad" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculates the Anderson-Darling test statistic on 2 distributions.</p>
+<p>Can be used on continuous or discrete distributions.</p>
+<p>Any binning/bucketing of the distributions/samples should be done before passing them to this function.</p>
+<p>Advantages:</p>
+<ul>
+<li>Unlike the KS, the AD (like the ES) can be used on both continuous &amp; discrete distributions.</li>
+<li>Works well even when the sample has fewer than 25 observations.</li>
+<li>More powerful than KS, especially for differences in the tails of distributions.</li>
+</ul>
+<p>References:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Anderson%E2%80%93Darling_test">Wikipedia article about the Anderson-Darling test</a></li>
+<li><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.anderson_ksamp.html">SciPy documentation</a></li>
+</ul>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>d1</code></td>
+        <td><code>np.array or pandas.Series</code></td>
+        <td><p>First sample.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>d2</code></td>
+        <td><code>np.array or pandas.Series</code></td>
+        <td><p>Second sample.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>verbose</code></td>
+        <td><code>bool</code></td>
+        <td><p>If True, useful interpretation info is printed to stdout.</p></td>
+        <td><code>False</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>float</code></td>
+      <td><p>Anderson-Darling test statistic.
+float: p-value of rejecting the null hypothesis (that the two distributions are identical).</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/stat_tests/ad.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@verbose_p_vals</span>
+<span class="k">def</span> <span class="nf">ad</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the Anderson-Darling test statistic on 2 distributions.</span>
+
+<span class="sd">    Can be used on continuous or discrete distributions.</span>
+
+<span class="sd">    Any binning/bucketing of the distributions/samples should be done before passing them to this function.</span>
+
+<span class="sd">    Advantages:</span>
+
+<span class="sd">    - Unlike the KS, the AD (like the ES) can be used on both continuous &amp; discrete distributions.</span>
+<span class="sd">    - Works well even when the sample has fewer than 25 observations.</span>
+<span class="sd">    - More powerful than KS, especially for differences in the tails of distributions.</span>
+
+<span class="sd">    References:</span>
+
+<span class="sd">    - [Wikipedia article about the Anderson-Darling test](https://en.wikipedia.org/wiki/Anderson%E2%80%93Darling_test)</span>
+<span class="sd">    - [SciPy documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.anderson_ksamp.html)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        d1 (np.array or pandas.Series): First sample.</span>
+
+<span class="sd">        d2 (np.array or pandas.Series): Second sample.</span>
+
+<span class="sd">        verbose (bool): If True, useful interpretation info is printed to stdout.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Anderson-Darling test statistic.</span>
+<span class="sd">        float: p-value of rejecting the null hypothesis (that the two distributions are identical).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">assure_numpy_array</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">assure_numpy_array</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
+
+    <span class="n">ad</span><span class="p">,</span> <span class="n">critical_values</span><span class="p">,</span> <span class="n">pvalue</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">anderson_ksamp</span><span class="p">([</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">ad</span><span class="p">,</span> <span class="n">pvalue</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-module">
+
+
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 class="doc doc-heading" id="probatus.stat_tests.es.es">
+<code class="highlight language-python"><span class="n">es</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.stat_tests.es.es" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculates the Epps-Singleton test statistic on 2 distributions.</p>
+<p>Can be used on continuous or discrete distributions.
+Any binning/bucketing of the distributions/samples should be done before passing them to this
+function.</p>
+<p>Whereas KS relies on the empirical distribution function, ES is based on the empirical characteristic function
+(Epps &amp; Singleton 1986, Goerg &amp; Kaiser 2009).</p>
+<p>Advantages:</p>
+<ul>
+<li>
+<p>Unlike the KS, the ES can be used on both continuous &amp; discrete distributions.</p>
+</li>
+<li>
+<p>ES has higher power (vs KS) in many examples.</p>
+</li>
+</ul>
+<p>Disadvantages:</p>
+<ul>
+<li>Not recommended for fewer than 25 observations. Instead, use the Anderson-Darling TS. (However, ES can still be
+used for small samples. A correction factor is applied so that the asymptotic TS distribution more closely follows
+the chi-squared distribution, such that p-values can be computed.)</li>
+</ul>
+<p>References:</p>
+<ul>
+<li><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.epps_singleton_2samp.html">SciPy documentation</a></li>
+</ul>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>d1</code></td>
+        <td><code>np.array or pandas.Series</code></td>
+        <td><p>First sample.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>d2</code></td>
+        <td><code>np.array or pandas.Series</code></td>
+        <td><p>Second sample.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>verbose</code></td>
+        <td><code>bool</code></td>
+        <td><p>If True, useful interpretation info is printed to stdout.</p></td>
+        <td><code>False</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>float</code></td>
+      <td><p>Epps-Singleton test statistic
+float: p-value of rejecting the null hypothesis (that the two distributions are identical)</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/stat_tests/es.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@verbose_p_vals</span>
+<span class="k">def</span> <span class="nf">es</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the Epps-Singleton test statistic on 2 distributions.</span>
+
+<span class="sd">    Can be used on continuous or discrete distributions.</span>
+<span class="sd">    Any binning/bucketing of the distributions/samples should be done before passing them to this</span>
+<span class="sd">    function.</span>
+
+<span class="sd">    Whereas KS relies on the empirical distribution function, ES is based on the empirical characteristic function</span>
+<span class="sd">    (Epps &amp; Singleton 1986, Goerg &amp; Kaiser 2009).</span>
+
+<span class="sd">    Advantages:</span>
+
+<span class="sd">    - Unlike the KS, the ES can be used on both continuous &amp; discrete distributions.</span>
+
+<span class="sd">    - ES has higher power (vs KS) in many examples.</span>
+
+<span class="sd">    Disadvantages:</span>
+
+<span class="sd">    - Not recommended for fewer than 25 observations. Instead, use the Anderson-Darling TS. (However, ES can still be</span>
+<span class="sd">    used for small samples. A correction factor is applied so that the asymptotic TS distribution more closely follows</span>
+<span class="sd">    the chi-squared distribution, such that p-values can be computed.)</span>
+
+
+<span class="sd">    References:</span>
+
+<span class="sd">    - [SciPy documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.epps_singleton_2samp.html)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        d1 (np.array or pandas.Series): First sample.</span>
+
+<span class="sd">        d2 (np.array or pandas.Series): Second sample.</span>
+
+<span class="sd">        verbose (bool): If True, useful interpretation info is printed to stdout.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Epps-Singleton test statistic</span>
+<span class="sd">        float: p-value of rejecting the null hypothesis (that the two distributions are identical)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">assure_numpy_array</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">assure_numpy_array</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
+
+    <span class="n">es</span><span class="p">,</span> <span class="n">pvalue</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">epps_singleton_2samp</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">es</span><span class="p">,</span> <span class="n">pvalue</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-module">
+
+
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 class="doc doc-heading" id="probatus.stat_tests.ks.ks">
+<code class="highlight language-python"><span class="n">ks</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.stat_tests.ks.ks" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculates the Kolmogorov-Smirnov test statistic on 2 samples.</p>
+<p>Any binning/bucketing of the distributions/samples should be done before passing them to this function.</p>
+<p>References:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test">Wikipedia article about the Kolmogorov-Smirnov test</a></li>
+<li><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ks_2samp.html">SciPy documentation</a></li>
+</ul>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>d1</code></td>
+        <td><code>np.ndarray or pandas.Series</code></td>
+        <td><p>First sample.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>d2</code></td>
+        <td><code>np.ndarray or pandas.Series</code></td>
+        <td><p>Second sample.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>verbose</code></td>
+        <td><code>bool</code></td>
+        <td><p>If True, useful interpretation info is printed to stdout.</p></td>
+        <td><code>False</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>float</code></td>
+      <td><p>Kolmogorov-Smirnov test statistic.
+float: p-value of rejecting the null hypothesis (that the two distributions are identical).</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/stat_tests/ks.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@verbose_p_vals</span>
+<span class="k">def</span> <span class="nf">ks</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the Kolmogorov-Smirnov test statistic on 2 samples.</span>
+
+<span class="sd">    Any binning/bucketing of the distributions/samples should be done before passing them to this function.</span>
+
+<span class="sd">    References:</span>
+
+<span class="sd">    - [Wikipedia article about the Kolmogorov-Smirnov test](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)</span>
+<span class="sd">    - [SciPy documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ks_2samp.html)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        d1 (np.ndarray or pandas.Series): First sample.</span>
+
+<span class="sd">        d2 (np.ndarray or pandas.Series): Second sample.</span>
+
+<span class="sd">        verbose (bool): If True, useful interpretation info is printed to stdout.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Kolmogorov-Smirnov test statistic.</span>
+<span class="sd">        float: p-value of rejecting the null hypothesis (that the two distributions are identical).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Perform data checks</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">assure_numpy_array</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">assure_numpy_array</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
+
+    <span class="c1"># Perform statistical tests</span>
+    <span class="n">ks</span><span class="p">,</span> <span class="n">pvalue</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">ks_2samp</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ks</span><span class="p">,</span> <span class="n">pvalue</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-module">
+
+
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 class="doc doc-heading" id="probatus.stat_tests.psi.psi">
+<code class="highlight language-python"><span class="n">psi</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.stat_tests.psi.psi" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculates the Population Stability Index.</p>
+<p>A simple statistical test that quantifies the similarity of two distributions.
+Commonly used in the banking / risk modeling industry.
+Only works on categorical data or bucketed numerical data.
+Distributions must be binned/bucketed before passing them to this function.
+Bin boundaries should be the same for both distributions.
+Distributions must have the same number of buckets.
+Note that the PSI varies with number of buckets chosen (typically 10-20 bins are used).
+Quantile bucketing is typically recommended.</p>
+<p>References:</p>
+<ul>
+<li><a href="https://scholarworks.wmich.edu/cgi/viewcontent.cgi?article=4249&amp;context=dissertations">Statistical Properties of Population Stability Index</a></li>
+</ul>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>d1</code></td>
+        <td><code>np.ndarray or pandas.Series</code></td>
+        <td><p>First distribution ("expected").</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>d2</code></td>
+        <td><code>np.ndarray or pandas.Series</code></td>
+        <td><p>Second distribution ("actual").</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>verbose</code></td>
+        <td><code>bool</code></td>
+        <td><p>If True, useful interpretation info is printed to stdout.</p></td>
+        <td><code>False</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>float</code></td>
+      <td><p>Measure of the similarity between d1 &amp; d2. (range 0-inf, with 0 indicating identical
+distributions and &gt; 0.25 indicating significantly different distributions)
+float: p-value for rejecting null hypothesis (that the two distributions are identical)</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/stat_tests/psi.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">psi</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the Population Stability Index.</span>
+
+<span class="sd">    A simple statistical test that quantifies the similarity of two distributions.</span>
+<span class="sd">    Commonly used in the banking / risk modeling industry.</span>
+<span class="sd">    Only works on categorical data or bucketed numerical data.</span>
+<span class="sd">    Distributions must be binned/bucketed before passing them to this function.</span>
+<span class="sd">    Bin boundaries should be the same for both distributions.</span>
+<span class="sd">    Distributions must have the same number of buckets.</span>
+<span class="sd">    Note that the PSI varies with number of buckets chosen (typically 10-20 bins are used).</span>
+<span class="sd">    Quantile bucketing is typically recommended.</span>
+
+<span class="sd">    References:</span>
+
+<span class="sd">    - [Statistical Properties of Population Stability Index](https://scholarworks.wmich.edu/cgi/viewcontent.cgi?article=4249&amp;context=dissertations)</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        d1 (np.ndarray or pandas.Series): First distribution (&quot;expected&quot;).</span>
+
+<span class="sd">        d2 (np.ndarray or pandas.Series): Second distribution (&quot;actual&quot;).</span>
+
+<span class="sd">        verbose (bool): If True, useful interpretation info is printed to stdout.</span>
+
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Measure of the similarity between d1 &amp; d2. (range 0-inf, with 0 indicating identical</span>
+<span class="sd">        distributions and &gt; 0.25 indicating significantly different distributions)</span>
+<span class="sd">        float: p-value for rejecting null hypothesis (that the two distributions are identical)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Perform data checks</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">assure_numpy_array</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">assure_numpy_array</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;PSI is not well-behaved when using less than 10 bins.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;PSI is not well-behaved when using more than 20 bins.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">d2</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Distributions do not have the same number of bins.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Number of bins/buckets</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the number of samples in each distribution</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">d1</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">d2</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="c1"># Calculate the ratio of samples in each bin</span>
+    <span class="n">expected_ratio</span> <span class="o">=</span> <span class="n">d1</span> <span class="o">/</span> <span class="n">n</span>
+    <span class="n">actual_ratio</span> <span class="o">=</span> <span class="n">d2</span> <span class="o">/</span> <span class="n">m</span>
+
+    <span class="c1"># Necessary to avoid divide by zero and ln(0). Should have minor impact on PSI value.</span>
+    <span class="n">has_empty_bucket</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">expected_ratio</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">expected_ratio</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0001</span>
+            <span class="n">has_empty_bucket</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">actual_ratio</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">actual_ratio</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0001</span>
+            <span class="n">has_empty_bucket</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="n">has_empty_bucket</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;PSI: Some of the buckets have zero counts. In theory this situation would mean PSI=Inf due to &quot;</span>
+            <span class="s2">&quot;division by 0. However, we artificially modified the count of samples in these bins to a small &quot;</span>
+            <span class="s2">&quot;number. This may cause that the PSI value for this feature is over-estimated (larger). &quot;</span>
+            <span class="s2">&quot;Decreasing the number of buckets may also help avoid buckets with zero counts.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Calculate the PSI value</span>
+    <span class="n">psi_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">actual_ratio</span> <span class="o">-</span> <span class="n">expected_ratio</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">actual_ratio</span> <span class="o">/</span> <span class="n">expected_ratio</span><span class="p">))</span>
+
+    <span class="c1"># Print the evaluation of statistical hypotheses</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">PSI =&quot;</span><span class="p">,</span> <span class="n">psi_value</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">PSI: Critical values defined according to de facto industry standard:&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">psi_value</span> <span class="o">&lt;=</span> <span class="mf">0.1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PSI &lt;= 0.10: No significant distribution change.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="mf">0.1</span> <span class="o">&lt;</span> <span class="n">psi_value</span> <span class="o">&lt;=</span> <span class="mf">0.25</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PSI &lt;= 0.25: Small distribution change; may require investigation.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">psi_value</span> <span class="o">&gt;</span> <span class="mf">0.25</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PSI &gt; 0.25: Significant distribution change; investigate.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Calculate the critical values and</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">]</span>
+        <span class="n">z_alpha</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+        <span class="n">psi_critvals</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">m</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">z_alpha</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">m</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">PSI: Critical values defined according to Yurdakul (2018):&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">psi_value</span> <span class="o">&gt;</span> <span class="n">psi_critvals</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;99.9</span><span class="si">% c</span><span class="s2">onfident distributions have changed.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">psi_value</span> <span class="o">&gt;</span> <span class="n">psi_critvals</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;99</span><span class="si">% c</span><span class="s2">onfident distributions have changed.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">psi_value</span> <span class="o">&gt;</span> <span class="n">psi_critvals</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;95</span><span class="si">% c</span><span class="s2">onfident distributions have changed.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">psi_value</span> <span class="o">&lt;</span> <span class="n">psi_critvals</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No significant distribution change.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Calculate p-value</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">psi_value</span> <span class="o">/</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">m</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">p_value</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">psi_value</span><span class="p">,</span> <span class="n">p_value</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-module">
+
+
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 class="doc doc-heading" id="probatus.stat_tests.sw.sw">
+<code class="highlight language-python"><span class="n">sw</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+
+<a class="headerlink" href="#probatus.stat_tests.sw.sw" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculates the Shapiro-Wilk test statistic on 2 distributions,
+which examines whether deviation from normality of two distributions are significantly different.</p>
+<p>References:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Shapiro%E2%80%93Wilk_test">Wikipedia article about the Shapiro-Wilk test</a></li>
+<li><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html">SciPy documentation</a></li>
+</ul>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>d1</code></td>
+        <td><code>np.ndarray or pandas.Series</code></td>
+        <td><p>First sample.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>d2</code></td>
+        <td><code>np.ndarray or pandas.Series</code></td>
+        <td><p>Second sample.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>verbose</code></td>
+        <td><code>bool</code></td>
+        <td><p>If True, useful interpretation info is printed to stdout.</p></td>
+        <td><code>False</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>float</code></td>
+      <td><p>Shapiro-Wilk test statistic
+float: p-value of rejecting the null hypothesis (that the two distributions are identical)</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>probatus/stat_tests/sw.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">sw</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the Shapiro-Wilk test statistic on 2 distributions,</span>
+<span class="sd">    which examines whether deviation from normality of two distributions are significantly different.</span>
+
+<span class="sd">    References:</span>
+
+<span class="sd">    - [Wikipedia article about the Shapiro-Wilk test](https://en.wikipedia.org/wiki/Shapiro%E2%80%93Wilk_test)</span>
+<span class="sd">    - [SciPy documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html)</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        d1 (np.ndarray or pandas.Series): First sample.</span>
+
+<span class="sd">        d2 (np.ndarray or pandas.Series): Second sample.</span>
+
+<span class="sd">        verbose (bool): If True, useful interpretation info is printed to stdout.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Shapiro-Wilk test statistic</span>
+<span class="sd">        float: p-value of rejecting the null hypothesis (that the two distributions are identical)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">assure_numpy_array</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">assure_numpy_array</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5000</span><span class="p">:</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5000</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5000</span><span class="p">:</span>
+        <span class="n">d2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">d2</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5000</span><span class="p">))</span>
+
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">shapiro</span><span class="p">(</span><span class="n">d1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">stats</span><span class="o">.</span><span class="n">shapiro</span><span class="p">(</span><span class="n">d2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span>
+
+    <span class="n">MOT</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">])</span>
+    <span class="n">n1</span> <span class="o">=</span> <span class="n">d1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">n2</span> <span class="o">=</span> <span class="n">d2</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">ran_delta</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
+        <span class="n">take_ran</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">MOT</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">ran_1</span> <span class="o">=</span> <span class="n">MOT</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span>
+            <span class="n">take_ran</span><span class="p">(</span><span class="n">n1</span><span class="p">),</span>
+        <span class="p">]</span>
+        <span class="n">ran_2</span> <span class="o">=</span> <span class="n">MOT</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span>
+            <span class="n">take_ran</span><span class="p">(</span><span class="n">n2</span><span class="p">),</span>
+        <span class="p">]</span>
+        <span class="n">delta_ran</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">shapiro</span><span class="p">(</span><span class="n">ran_1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">stats</span><span class="o">.</span><span class="n">shapiro</span><span class="p">(</span><span class="n">ran_2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">delta_ran</span>
+
+    <span class="n">collect</span> <span class="o">=</span> <span class="p">[</span><span class="n">ran_delta</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
+    <span class="n">collect</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">collect</span><span class="p">))</span>
+    <span class="n">delta_p_value</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">stats</span><span class="o">.</span><span class="n">percentileofscore</span><span class="p">(</span><span class="n">collect</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span>
+
+    <span class="n">quants</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.975</span><span class="p">]</span>
+    <span class="n">sig_vals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">collect</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">quants</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">delta</span> <span class="o">&lt;</span> <span class="n">sig_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">delta</span> <span class="o">&gt;</span> <span class="n">sig_vals</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Shapiro_Difference | Null hypothesis : &lt;delta is not different from zero&gt; REJECTED.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Delta is outside 95% CI -&gt; Distributions very different.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Shapiro_Difference | Null hypothesis : &lt;delta is not different from zero&gt; NOT REJECTED.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Delta is inside 95% CI -&gt; Distributions are not different.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">delta</span><span class="p">,</span> <span class="n">delta_p_value</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="sample_similarity.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: probatus.sample_similarity" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              probatus.sample_similarity
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="utils.html" class="md-footer__link md-footer__link--next" aria-label="Next: probatus.utils" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              probatus.utils
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2020 ING Bank N.V.
+          </div>
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.e99e714c.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c7d1b464.min.js"></script>
+      
+    
+  </body>
+</html>
